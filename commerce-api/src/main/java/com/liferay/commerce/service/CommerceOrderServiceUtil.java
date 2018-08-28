@@ -44,6 +44,17 @@ public class CommerceOrderServiceUtil {
 	 */
 	public static com.liferay.commerce.model.CommerceOrder addOrganizationCommerceOrder(
 		long groupId, long siteGroupId, long orderOrganizationId,
+		long commerceCurrencyId, long shippingAddressId,
+		String purchaseOrderNumber)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .addOrganizationCommerceOrder(groupId, siteGroupId,
+			orderOrganizationId, commerceCurrencyId, shippingAddressId,
+			purchaseOrderNumber);
+	}
+
+	public static com.liferay.commerce.model.CommerceOrder addOrganizationCommerceOrder(
+		long groupId, long siteGroupId, long orderOrganizationId,
 		long shippingAddressId, String purchaseOrderNumber)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()

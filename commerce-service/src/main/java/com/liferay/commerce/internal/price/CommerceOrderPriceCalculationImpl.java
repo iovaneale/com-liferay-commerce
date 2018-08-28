@@ -65,11 +65,11 @@ public class CommerceOrderPriceCalculationImpl
 
 		CommerceDiscountValue orderShippingCommerceDiscountValue =
 			_commerceDiscountCalculation.getOrderShippingCommerceDiscountValue(
-				commerceOrder.getShippingAmount(), commerceContext);
+				commerceOrder, shippingAmount, commerceContext);
 
 		CommerceDiscountValue orderSubtotalCommerceDiscountValue =
 			_commerceDiscountCalculation.getOrderSubtotalCommerceDiscountValue(
-				subtotalAmount, commerceContext);
+				commerceOrder, subtotalAmount, commerceContext);
 
 		BigDecimal totalAmount = subtotalAmount;
 
@@ -93,7 +93,7 @@ public class CommerceOrderPriceCalculationImpl
 
 		CommerceDiscountValue orderTotalCommerceDiscountValue =
 			_commerceDiscountCalculation.getOrderTotalCommerceDiscountValue(
-				totalAmount, commerceContext);
+				commerceOrder, totalAmount, commerceContext);
 
 		if (orderTotalCommerceDiscountValue != null) {
 			CommerceMoney discountAmount =
@@ -193,6 +193,19 @@ public class CommerceOrderPriceCalculationImpl
 		BigDecimal amount, CommerceCurrency commerceCurrency,
 		BigDecimal discountAmount, BigDecimal level1, BigDecimal level2,
 		BigDecimal level3, BigDecimal level4) {
+
+		if ((discountAmount == null) || (amount == null) ||
+			(amount.compareTo(BigDecimal.ZERO) <= 0)) {
+
+			return new CommerceDiscountValue(
+				0,
+				_commerceMoneyFactory.create(commerceCurrency, BigDecimal.ZERO),
+				BigDecimal.ZERO,
+				new BigDecimal[] {
+					BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+					BigDecimal.ZERO
+				});
+		}
 
 		BigDecimal[] shippingDiscountPercentageValues =
 			{level1, level2, level3, level4};

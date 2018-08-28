@@ -45,6 +45,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -63,6 +64,7 @@ import java.util.Set;
 /**
  * @generated
  */
+@Ignore
 @RunWith(Arquillian.class)
 public class CPOptionValuePersistenceTest {
 	@ClassRule
@@ -127,6 +129,8 @@ public class CPOptionValuePersistenceTest {
 
 		newCPOptionValue.setUuid(RandomTestUtil.randomString());
 
+		newCPOptionValue.setExternalReferenceCode(RandomTestUtil.randomString());
+
 		newCPOptionValue.setGroupId(RandomTestUtil.nextLong());
 
 		newCPOptionValue.setCompanyId(RandomTestUtil.nextLong());
@@ -155,6 +159,8 @@ public class CPOptionValuePersistenceTest {
 
 		Assert.assertEquals(existingCPOptionValue.getUuid(),
 			newCPOptionValue.getUuid());
+		Assert.assertEquals(existingCPOptionValue.getExternalReferenceCode(),
+			newCPOptionValue.getExternalReferenceCode());
 		Assert.assertEquals(existingCPOptionValue.getCPOptionValueId(),
 			newCPOptionValue.getCPOptionValueId());
 		Assert.assertEquals(existingCPOptionValue.getGroupId(),
@@ -242,6 +248,15 @@ public class CPOptionValuePersistenceTest {
 	}
 
 	@Test
+	public void testCountByC_ERC() throws Exception {
+		_persistence.countByC_ERC(RandomTestUtil.nextLong(), "");
+
+		_persistence.countByC_ERC(0L, "null");
+
+		_persistence.countByC_ERC(0L, (String)null);
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		CPOptionValue newCPOptionValue = addCPOptionValue();
 
@@ -265,10 +280,10 @@ public class CPOptionValuePersistenceTest {
 
 	protected OrderByComparator<CPOptionValue> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create("CPOptionValue", "uuid",
-			true, "CPOptionValueId", true, "groupId", true, "companyId", true,
-			"userId", true, "userName", true, "createDate", true,
-			"modifiedDate", true, "CPOptionId", true, "name", true, "priority",
-			true, "key", true, "lastPublishDate", true);
+			true, "externalReferenceCode", true, "CPOptionValueId", true,
+			"groupId", true, "companyId", true, "userId", true, "userName",
+			true, "createDate", true, "modifiedDate", true, "CPOptionId", true,
+			"name", true, "priority", true, "key", true, "lastPublishDate", true);
 	}
 
 	@Test
@@ -486,6 +501,14 @@ public class CPOptionValuePersistenceTest {
 		Assert.assertTrue(Objects.equals(existingCPOptionValue.getKey(),
 				ReflectionTestUtil.invoke(existingCPOptionValue,
 					"getOriginalKey", new Class<?>[0])));
+
+		Assert.assertEquals(Long.valueOf(existingCPOptionValue.getCompanyId()),
+			ReflectionTestUtil.<Long>invoke(existingCPOptionValue,
+				"getOriginalCompanyId", new Class<?>[0]));
+		Assert.assertTrue(Objects.equals(
+				existingCPOptionValue.getExternalReferenceCode(),
+				ReflectionTestUtil.invoke(existingCPOptionValue,
+					"getOriginalExternalReferenceCode", new Class<?>[0])));
 	}
 
 	protected CPOptionValue addCPOptionValue() throws Exception {
@@ -494,6 +517,8 @@ public class CPOptionValuePersistenceTest {
 		CPOptionValue cpOptionValue = _persistence.create(pk);
 
 		cpOptionValue.setUuid(RandomTestUtil.randomString());
+
+		cpOptionValue.setExternalReferenceCode(RandomTestUtil.randomString());
 
 		cpOptionValue.setGroupId(RandomTestUtil.nextLong());
 

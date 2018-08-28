@@ -61,10 +61,9 @@ public class CommerceDiscountCalculationImpl
 
 	@Override
 	public CommerceDiscountValue getOrderShippingCommerceDiscountValue(
-			BigDecimal orderShippingCost, CommerceContext commerceContext)
+			CommerceOrder commerceOrder, BigDecimal shippingAmount,
+			CommerceContext commerceContext)
 		throws PortalException {
-
-		CommerceOrder commerceOrder = commerceContext.getCommerceOrder();
 
 		if (commerceOrder == null) {
 			return null;
@@ -77,15 +76,18 @@ public class CommerceDiscountCalculationImpl
 			commerceContext.getCouponCode(), Type.APPLY_TO_SHIPPING);
 
 		return _getCommerceDiscountValue(
-			orderShippingCost, commerceContext, searchContext);
+			shippingAmount, commerceContext, searchContext);
 	}
 
 	@Override
 	public CommerceDiscountValue getOrderSubtotalCommerceDiscountValue(
-			BigDecimal orderSubtotal, CommerceContext commerceContext)
+			CommerceOrder commerceOrder, BigDecimal subtotalAmount,
+			CommerceContext commerceContext)
 		throws PortalException {
 
-		CommerceOrder commerceOrder = commerceContext.getCommerceOrder();
+		if (commerceOrder == null) {
+			return null;
+		}
 
 		SearchContext searchContext = buildSearchContext(
 			commerceOrder.getCompanyId(), commerceOrder.getSiteGroupId(), 0, 0,
@@ -94,15 +96,18 @@ public class CommerceDiscountCalculationImpl
 			commerceContext.getCouponCode(), Type.APPLY_TO_SUBTOTAL);
 
 		return _getCommerceDiscountValue(
-			orderSubtotal, commerceContext, searchContext);
+			subtotalAmount, commerceContext, searchContext);
 	}
 
 	@Override
 	public CommerceDiscountValue getOrderTotalCommerceDiscountValue(
-			BigDecimal orderTotal, CommerceContext commerceContext)
+			CommerceOrder commerceOrder, BigDecimal totalAmount,
+			CommerceContext commerceContext)
 		throws PortalException {
 
-		CommerceOrder commerceOrder = commerceContext.getCommerceOrder();
+		if (commerceOrder == null) {
+			return null;
+		}
 
 		SearchContext searchContext = buildSearchContext(
 			commerceOrder.getCompanyId(), commerceOrder.getSiteGroupId(), 0, 0,
@@ -111,7 +116,7 @@ public class CommerceDiscountCalculationImpl
 			commerceContext.getCouponCode(), Type.APPLY_TO_TOTAL);
 
 		return _getCommerceDiscountValue(
-			orderTotal, commerceContext, searchContext);
+			totalAmount, commerceContext, searchContext);
 	}
 
 	@Override
@@ -200,6 +205,10 @@ public class CommerceDiscountCalculationImpl
 		for (CommerceDiscountValue commerceDiscountValue :
 				commerceDiscountValues) {
 
+			if (commerceDiscountValue == null) {
+				continue;
+			}
+
 			CommerceMoney discountAmount =
 				commerceDiscountValue.getDiscountAmount();
 
@@ -217,6 +226,10 @@ public class CommerceDiscountCalculationImpl
 	private CommerceDiscountValue _getCommerceDiscountValue(
 		CommerceDiscount commerceDiscount, BigDecimal amount,
 		CommerceCurrency commerceCurrency) {
+
+		if ((amount == null) || (amount.compareTo(BigDecimal.ZERO) <= 0)) {
+			return null;
+		}
 
 		BigDecimal[] values = new BigDecimal[4];
 

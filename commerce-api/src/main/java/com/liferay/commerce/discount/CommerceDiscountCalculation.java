@@ -17,6 +17,7 @@ package com.liferay.commerce.discount;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.commerce.context.CommerceContext;
+import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import java.math.BigDecimal;
@@ -28,15 +29,18 @@ import java.math.BigDecimal;
 public interface CommerceDiscountCalculation {
 
 	public CommerceDiscountValue getOrderShippingCommerceDiscountValue(
-			BigDecimal orderShippingCost, CommerceContext commerceContext)
+			CommerceOrder commerceOrder, BigDecimal shippingAmount,
+			CommerceContext commerceContext)
 		throws PortalException;
 
 	public CommerceDiscountValue getOrderSubtotalCommerceDiscountValue(
-			BigDecimal orderSubtotal, CommerceContext commerceContext)
+			CommerceOrder commerceOrder, BigDecimal subtotalAmount,
+			CommerceContext commerceContext)
 		throws PortalException;
 
 	public CommerceDiscountValue getOrderTotalCommerceDiscountValue(
-			BigDecimal orderTotal, CommerceContext commerceContext)
+			CommerceOrder commerceOrder, BigDecimal totalAmount,
+			CommerceContext commerceContext)
 		throws PortalException;
 
 	public CommerceDiscountValue getProductCommerceDiscountValue(

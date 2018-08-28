@@ -87,6 +87,12 @@ public interface CPOptionValueLocalService extends BaseLocalService,
 		Map<Locale, String> nameMap, double priority, String key,
 		ServiceContext serviceContext) throws PortalException;
 
+	@Indexable(type = IndexableType.REINDEX)
+	public CPOptionValue addCPOptionValue(long cpOptionId,
+		Map<Locale, String> nameMap, double priority, String key,
+		String externalReferenceCode, ServiceContext serviceContext)
+		throws PortalException;
+
 	/**
 	* Creates a new cp option value with the primary key. Does not add the cp option value to the database.
 	*
@@ -188,7 +194,22 @@ public interface CPOptionValueLocalService extends BaseLocalService,
 		Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CPOptionValue fetchByExternalReferenceCode(long companyId,
+		String externalReferenceCode);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public CPOptionValue fetchCPOptionValue(long CPOptionValueId);
+
+	/**
+	* Returns the cp option value with the matching external reference code and company.
+	*
+	* @param companyId the primary key of the company
+	* @param externalReferenceCode the cp option value's external reference code
+	* @return the matching cp option value, or <code>null</code> if a matching cp option value could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CPOptionValue fetchCPOptionValueByReferenceCode(long companyId,
+		String externalReferenceCode);
 
 	/**
 	* Returns the cp option value matching the UUID and group.
@@ -213,6 +234,10 @@ public interface CPOptionValueLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public CPOptionValue getCPOptionValue(long CPOptionValueId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CPOptionValue getCPOptionValue(long cpOptionId, String key)
 		throws PortalException;
 
 	/**
@@ -326,4 +351,9 @@ public interface CPOptionValueLocalService extends BaseLocalService,
 	public CPOptionValue updateCPOptionValue(long cpOptionValueId,
 		Map<Locale, String> nameMap, double priority, String key,
 		ServiceContext serviceContext) throws PortalException;
+
+	public CPOptionValue upsertCPOptionValue(long cpOptionId,
+		Map<Locale, String> nameMap, double priority, String key,
+		String externalReferenceCode, ServiceContext serviceContext)
+		throws PortalException;
 }

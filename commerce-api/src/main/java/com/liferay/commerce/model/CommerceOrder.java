@@ -107,4 +107,13 @@ public interface CommerceOrder extends CommerceOrderModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public boolean isOpen();
+
+	public void setShippingDiscounts(
+		com.liferay.commerce.discount.CommerceDiscountValue commerceDiscountValue);
+
+	public void setSubtotalDiscounts(
+		com.liferay.commerce.discount.CommerceDiscountValue commerceDiscountValue);
+
+	public void setTotalDiscounts(
+		com.liferay.commerce.discount.CommerceDiscountValue commerceDiscountValue);
 }

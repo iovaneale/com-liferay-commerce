@@ -62,9 +62,11 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 				/>
 			</div>
 
-			<div class="autofit-col">
-				<div><a class="btn commerce-btn" href="<%= commerceCartContentMiniDisplayContext.getCommerceCartPortletURL() %>"><liferay-ui:message key="edit-cart" /></a></div>
-			</div>
+			<c:if test="<%= commerceCartContentMiniDisplayContext.hasPermission(ActionKeys.VIEW) %>">
+				<div class="autofit-col">
+					<div><a class="btn commerce-btn" href="<%= commerceCartContentMiniDisplayContext.getCommerceCartPortletURL() %>"><liferay-ui:message key="edit-cart" /></a></div>
+				</div>
+			</c:if>
 		</li>
 	</ul>
 
@@ -130,9 +132,11 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 				CommerceMoney finalPriceMoney = commerceOrderItem.getFinalPriceMoney();
 				%>
 
-				<liferay-ui:search-container-column-text
-					value="<%= finalPriceMoney.format(locale) %>"
-				/>
+				<liferay-ui:search-container-column-text>
+					<div class="mt-3">
+						<%= finalPriceMoney.format(locale) %>
+					</div>
+				</liferay-ui:search-container-column-text>
 			</liferay-ui:search-container-row>
 
 			<liferay-ui:search-iterator

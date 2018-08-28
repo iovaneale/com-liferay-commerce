@@ -16,7 +16,7 @@ package com.liferay.commerce.internal.test.util;
 
 import com.liferay.commerce.context.CommerceContext;
 import com.liferay.commerce.currency.model.CommerceCurrency;
-import com.liferay.commerce.currency.service.CommerceCurrencyServiceUtil;
+import com.liferay.commerce.currency.test.util.CommerceCurrencyTestUtil;
 import com.liferay.commerce.model.CPDefinitionInventory;
 import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.model.CommerceCountry;
@@ -129,15 +129,34 @@ public class CommerceTestUtil {
 	}
 
 	public static CommerceOrderItem addCommerceOrderItem(
-			long commerceOrderId, long cpInstanceId)
+			long commerceOrderId, long cpInstanceId, int quantity)
 		throws Exception {
 
+		CommerceOrder commerceOrder =
+			CommerceOrderLocalServiceUtil.getCommerceOrder(commerceOrderId);
+
+		if (commerceOrder.getCommerceCurrency() == null) {
+			CommerceCurrency commerceCurrency =
+				CommerceCurrencyTestUtil.addCommerceCurrency(
+					commerceOrder.getGroupId());
+
+			commerceOrder.setCommerceCurrencyId(
+				commerceCurrency.getCommerceCurrencyId());
+
+			CommerceOrderLocalServiceUtil.updateCommerceOrder(commerceOrder);
+		}
+
+		CommerceContext commerceContext = new TestCommerceContext(
+			commerceOrder.getCommerceCurrency(), null, null, commerceOrder,
+			null);
+
 		return addCommerceOrderItem(
-			commerceOrderId, cpInstanceId, RandomTestUtil.randomInt());
+			commerceOrderId, cpInstanceId, quantity, commerceContext);
 	}
 
 	public static CommerceOrderItem addCommerceOrderItem(
-			long commerceOrderId, long cpInstanceId, int quantity)
+			long commerceOrderId, long cpInstanceId, int quantity,
+			CommerceContext commerceContext)
 		throws Exception {
 
 		CommerceOrder commerceOrder =
@@ -147,12 +166,9 @@ public class CommerceTestUtil {
 			ServiceContextTestUtil.getServiceContext(
 				commerceOrder.getGroupId());
 
-		CommerceContext commerceContext = new TestCommerceContext(
-			commerceOrder.getCommerceCurrency(), null, null, null, null);
-
 		return CommerceOrderItemLocalServiceUtil.addCommerceOrderItem(
-			commerceOrderId, cpInstanceId, quantity, RandomTestUtil.randomInt(),
-			null, commerceContext, serviceContext);
+			commerceOrderId, cpInstanceId, quantity, 0, null, commerceContext,
+			serviceContext);
 	}
 
 	public static CommercePaymentMethod addCommercePaymentMethod(long groupId)
@@ -200,15 +216,14 @@ public class CommerceTestUtil {
 	public static CommerceWarehouse addCommerceWarehouse(long groupId)
 		throws PortalException {
 
-		CommerceCountry commerceCountry =
-			CommerceCountryLocalServiceUtil.fetchCommerceCountry(groupId, 380);
-
-		CommerceRegion commerceRegion =
-			CommerceRegionLocalServiceUtil.getCommerceRegion(
-				commerceCountry.getCommerceCountryId(), "VE");
-
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(groupId);
+
+		CommerceCountry commerceCountry = _setUpCountry(
+			groupId, serviceContext);
+
+		CommerceRegion commerceRegion = _setUpRegion(
+			commerceCountry, serviceContext);
 
 		return CommerceWarehouseLocalServiceUtil.addCommerceWarehouse(
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(), true,
@@ -252,15 +267,14 @@ public class CommerceTestUtil {
 			long groupId, long userId)
 		throws Exception {
 
-		CommerceCountry commerceCountry =
-			CommerceCountryLocalServiceUtil.fetchCommerceCountry(groupId, 380);
-
-		CommerceRegion commerceRegion =
-			CommerceRegionLocalServiceUtil.getCommerceRegion(
-				commerceCountry.getCommerceCountryId(), "VE");
-
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(groupId);
+
+		CommerceCountry commerceCountry = _setUpCountry(
+			groupId, serviceContext);
+
+		CommerceRegion commerceRegion = _setUpRegion(
+			commerceCountry, serviceContext);
 
 		return CommerceAddressLocalServiceUtil.addCommerceAddress(
 			User.class.getName(), userId, RandomTestUtil.randomString(),
@@ -272,14 +286,34 @@ public class CommerceTestUtil {
 			RandomTestUtil.randomString(), false, false, serviceContext);
 	}
 
-	public static CommerceOrder addUserCommerceOrder(long groupId)
+	public static CommerceOrder addUserCommerceOrder(
+			long groupId, long userId, long commerceCurrencyId)
 		throws Exception {
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(groupId);
 
-		return CommerceOrderLocalServiceUtil.addUserCommerceOrder(
-			groupId, serviceContext.getUserId());
+		if (userId == 0) {
+			userId = serviceContext.getUserId();
+		}
+
+		CommerceOrder commerceOrder =
+			CommerceOrderLocalServiceUtil.addUserCommerceOrder(
+				groupId, userId, commerceCurrencyId);
+
+		long actualCommerceCurrencyId = commerceOrder.getCommerceCurrencyId();
+
+		if (actualCommerceCurrencyId == 0) {
+			CommerceCurrency commerceCurrency =
+				CommerceCurrencyTestUtil.addCommerceCurrency(groupId);
+
+			commerceOrder.setCommerceCurrencyId(
+				commerceCurrency.getCommerceCurrencyId());
+
+			CommerceOrderLocalServiceUtil.updateCommerceOrder(commerceOrder);
+		}
+
+		return commerceOrder;
 	}
 
 	public static CommerceOrder checkoutOrder(CommerceOrder commerceOrder)
@@ -290,7 +324,7 @@ public class CommerceTestUtil {
 				commerceOrder.getGroupId());
 
 		CommerceCurrency commerceCurrency =
-			CommerceCurrencyServiceUtil.fetchPrimaryCommerceCurrency(
+			CommerceCurrencyTestUtil.addCommerceCurrency(
 				commerceOrder.getGroupId());
 
 		CommerceContext commerceContext = new TestCommerceContext(
@@ -299,6 +333,44 @@ public class CommerceTestUtil {
 		return CommerceOrderLocalServiceUtil.checkoutCommerceOrder(
 			commerceOrder.getCommerceOrderId(), commerceContext,
 			serviceContext);
+	}
+
+	private static CommerceCountry _setUpCountry(
+			long groupId, ServiceContext serviceContext)
+		throws PortalException {
+
+		CommerceCountry commerceCountry =
+			CommerceCountryLocalServiceUtil.fetchCommerceCountry(groupId, 000);
+
+		if (commerceCountry == null) {
+			commerceCountry =
+				CommerceCountryLocalServiceUtil.addCommerceCountry(
+					RandomTestUtil.randomLocaleStringMap(), true, true, "ZZ",
+					"ZZZ", 000, false, RandomTestUtil.randomDouble(), true,
+					serviceContext);
+		}
+
+		return commerceCountry;
+	}
+
+	private static CommerceRegion _setUpRegion(
+			CommerceCountry commerceCountry, ServiceContext serviceContext)
+		throws PortalException {
+
+		CommerceRegion commerceRegion;
+
+		try {
+			commerceRegion = CommerceRegionLocalServiceUtil.getCommerceRegion(
+				commerceCountry.getCommerceCountryId(), "ZZ");
+		}
+		catch (Exception e) {
+			commerceRegion = CommerceRegionLocalServiceUtil.addCommerceRegion(
+				commerceCountry.getCommerceCountryId(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+				RandomTestUtil.randomDouble(), true, serviceContext);
+		}
+
+		return commerceRegion;
 	}
 
 }

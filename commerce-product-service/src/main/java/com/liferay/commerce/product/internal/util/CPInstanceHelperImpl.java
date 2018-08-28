@@ -482,9 +482,15 @@ public class CPInstanceHelperImpl implements CPInstanceHelper {
 			boolean skuContributor)
 		throws PortalException {
 
-		return _getDDMForm(
+		DDMForm ddmForm = _getDDMForm(
 			cpDefinitionId, locale, ignoreSKUCombinations, skuContributor,
 			false, true);
+
+		if (!ignoreSKUCombinations) {
+			ddmForm.addDDMFormRule(createDDMFormRule(ddmForm, cpDefinitionId));
+		}
+
+		return ddmForm;
 	}
 
 	@Override
@@ -713,10 +719,6 @@ public class CPInstanceHelperImpl implements CPInstanceHelper {
 			ddmForm.addDDMFormField(ddmFormField);
 		}
 
-		if (!ignoreSKUCombinations) {
-			ddmForm.addDDMFormRule(createDDMFormRule(ddmForm, cpDefinitionId));
-		}
-
 		ddmForm.addAvailableLocale(locale);
 		ddmForm.setDefaultLocale(locale);
 
@@ -732,18 +734,18 @@ public class CPInstanceHelperImpl implements CPInstanceHelper {
 		}
 
 		if (ignoreSKUCombinations) {
-			return cpDefinitionOptionRel.getRequired();
+			return cpDefinitionOptionRel.isRequired();
 		}
 
 		if (publicStore) {
-			if (cpDefinitionOptionRel.getRequired() ||
-				cpDefinitionOptionRel.getSkuContributor()) {
+			if (cpDefinitionOptionRel.isRequired() ||
+				cpDefinitionOptionRel.isSkuContributor()) {
 
 				return true;
 			}
 		}
 		else {
-			return cpDefinitionOptionRel.getSkuContributor();
+			return cpDefinitionOptionRel.isSkuContributor();
 		}
 
 		return false;

@@ -155,6 +155,18 @@ public class CPDefinitionServiceImpl extends CPDefinitionServiceBaseImpl {
 
 	@Override
 	public List<CPDefinition> getCPDefinitions(
+			long groupId, int status, int start, int end)
+		throws PortalException {
+
+		_portletResourcePermission.check(
+			getPermissionChecker(), groupId, CPActionKeys.MANAGE_CATALOG);
+
+		return cpDefinitionLocalService.getCPDefinitions(
+			groupId, status, start, end);
+	}
+
+	@Override
+	public List<CPDefinition> getCPDefinitions(
 			long groupId, String productTypeName, String languageId, int status,
 			int start, int end,
 			OrderByComparator<CPDefinition> orderByComparator)
@@ -182,6 +194,16 @@ public class CPDefinitionServiceImpl extends CPDefinitionServiceBaseImpl {
 
 		return cpDefinitionLocalService.getCPDefinitionsByCategoryId(
 			categoryId, start, end);
+	}
+
+	@Override
+	public int getCPDefinitionsCount(long groupId, int status)
+		throws PortalException {
+
+		_portletResourcePermission.check(
+			getPermissionChecker(), groupId, CPActionKeys.MANAGE_CATALOG);
+
+		return cpDefinitionLocalService.getCPDefinitionsCount(groupId, status);
 	}
 
 	@Override
@@ -257,6 +279,9 @@ public class CPDefinitionServiceImpl extends CPDefinitionServiceBaseImpl {
 			int start, int end, Sort sort)
 		throws PortalException {
 
+		_portletResourcePermission.check(
+			getPermissionChecker(), groupId, CPActionKeys.MANAGE_CATALOG);
+
 		return cpDefinitionLocalService.searchCPDefinitions(
 			companyId, groupId, keywords, status, start, end, sort);
 	}
@@ -266,6 +291,9 @@ public class CPDefinitionServiceImpl extends CPDefinitionServiceBaseImpl {
 			long companyId, long groupId, String keywords, String filterFields,
 			String filterValues, int start, int end, Sort sort)
 		throws PortalException {
+
+		_portletResourcePermission.check(
+			getPermissionChecker(), groupId, CPActionKeys.MANAGE_CATALOG);
 
 		return cpDefinitionLocalService.searchCPDefinitions(
 			companyId, groupId, keywords, filterFields, filterValues, start,
@@ -379,7 +407,7 @@ public class CPDefinitionServiceImpl extends CPDefinitionServiceBaseImpl {
 
 		CPDefinition cpDefinition =
 			cpDefinitionLocalService.fetchByExternalReferenceCode(
-				externalReferenceCode);
+				serviceContext.getCompanyId(), externalReferenceCode);
 
 		if (cpDefinition == null) {
 			_portletResourcePermission.check(

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.1.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_1_0.dtd">
 
 <service-builder auto-namespace-tables="false" package-path="com.liferay.commerce.user.segment">
 	<author>Marco Leo</author>
@@ -40,6 +40,9 @@
 		<finder name="CommerceUserSegmentEntryId" return-type="Collection">
 			<finder-column name="commerceUserSegmentEntryId" />
 		</finder>
+
+		<!-- References -->
+
 		<reference entity="ExpandoRow" package-path="com.liferay.portlet.expando" />
 	</entity>
 	<entity local-service="true" name="CommerceUserSegmentEntry" remote-service="true">
@@ -90,7 +93,6 @@
 
 		<!-- References -->
 
-		<reference entity="Organization" package-path="com.liferay.portal" />
 		<reference entity="Role" package-path="com.liferay.portal" />
 		<reference entity="ExpandoRow" package-path="com.liferay.portlet.expando" />
 	</entity>

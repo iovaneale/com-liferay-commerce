@@ -175,9 +175,19 @@ public class CommerceDiscountIndexer extends BaseIndexer<CommerceDiscount> {
 			searchContext.getAttribute(FIELD_COUPON_CODE), null);
 
 		if (Validator.isNotNull(couponCode)) {
-			contextBooleanFilter.addRequiredTerm(FIELD_COUPON_CODE, couponCode);
-			contextBooleanFilter.addRequiredTerm(
+			BooleanFilter booleanFilter = new BooleanFilter();
+			BooleanFilter booleanFilterCoupon = new BooleanFilter();
+
+			booleanFilterCoupon.addRequiredTerm(FIELD_COUPON_CODE, couponCode);
+			booleanFilterCoupon.addRequiredTerm(
 				FIELD_USE_COUPON_CODE, Boolean.TRUE.toString());
+
+			booleanFilter.add(booleanFilterCoupon);
+
+			booleanFilter.addTerm(
+				FIELD_USE_COUPON_CODE, Boolean.FALSE.toString());
+
+			contextBooleanFilter.add(booleanFilter);
 		}
 		else {
 			contextBooleanFilter.addRequiredTerm(
@@ -267,11 +277,11 @@ public class CommerceDiscountIndexer extends BaseIndexer<CommerceDiscount> {
 		document.addText(
 			FIELD_TARGET_TYPE, commerceDiscountTargetType.toString());
 		document.addText(Field.USER_NAME, commerceDiscount.getUserName());
-		document.addKeyword(FIELD_ACTIVE, commerceDiscount.getActive());
+		document.addKeyword(FIELD_ACTIVE, commerceDiscount.isActive());
 		document.addKeyword(
 			FIELD_COUPON_CODE, commerceDiscount.getCouponCode());
 		document.addKeyword(
-			FIELD_USE_COUPON_CODE, commerceDiscount.getUseCouponCode());
+			FIELD_USE_COUPON_CODE, commerceDiscount.isUseCouponCode());
 
 		List<CommerceDiscountUserSegmentRel> commerceDiscountUserSegmentRels =
 			_commerceDiscountUserSegmentRelLocalService.

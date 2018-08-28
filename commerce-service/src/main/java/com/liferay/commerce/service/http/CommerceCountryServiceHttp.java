@@ -183,7 +183,8 @@ public class CommerceCountryServiceHttp {
 	public static java.util.List<com.liferay.commerce.model.CommerceCountry> getCommerceCountries(
 		HttpPrincipal httpPrincipal, long groupId, boolean active, int start,
 		int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.commerce.model.CommerceCountry> orderByComparator) {
+		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.commerce.model.CommerceCountry> orderByComparator)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(CommerceCountryServiceUtil.class,
 					"getCommerceCountries", _getCommerceCountriesParameterTypes4);
@@ -197,6 +198,10 @@ public class CommerceCountryServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
+				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
+					throw (com.liferay.portal.kernel.exception.PortalException)e;
+				}
+
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
@@ -341,8 +346,7 @@ public class CommerceCountryServiceHttp {
 
 	public static java.util.List<com.liferay.commerce.model.CommerceCountry> getShippingCommerceCountries(
 		HttpPrincipal httpPrincipal, long groupId, boolean shippingAllowed,
-		boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		boolean active) {
 		try {
 			MethodKey methodKey = new MethodKey(CommerceCountryServiceUtil.class,
 					"getShippingCommerceCountries",
@@ -357,10 +361,6 @@ public class CommerceCountryServiceHttp {
 				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
 			}
 			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 

@@ -87,8 +87,13 @@ public class CommerceCountryServiceImpl extends CommerceCountryServiceBaseImpl {
 
 	@Override
 	public List<CommerceCountry> getCommerceCountries(
-		long groupId, boolean active, int start, int end,
-		OrderByComparator<CommerceCountry> orderByComparator) {
+			long groupId, boolean active, int start, int end,
+			OrderByComparator<CommerceCountry> orderByComparator)
+		throws PortalException {
+
+		_portletResourcePermission.check(
+			getPermissionChecker(), groupId,
+			CommerceActionKeys.MANAGE_COMMERCE_COUNTRIES);
 
 		return commerceCountryLocalService.getCommerceCountries(
 			groupId, active, start, end, orderByComparator);
@@ -133,18 +138,19 @@ public class CommerceCountryServiceImpl extends CommerceCountryServiceBaseImpl {
 	public CommerceCountry getCommerceCountry(long commerceCountryId)
 		throws PortalException {
 
-		return commerceCountryLocalService.getCommerceCountry(
-			commerceCountryId);
+		CommerceCountry commerceCountry =
+			commerceCountryLocalService.getCommerceCountry(commerceCountryId);
+
+		_portletResourcePermission.check(
+			getPermissionChecker(), commerceCountry.getGroupId(),
+			CommerceActionKeys.MANAGE_COMMERCE_COUNTRIES);
+
+		return commerceCountry;
 	}
 
 	@Override
 	public List<CommerceCountry> getShippingCommerceCountries(
-			long groupId, boolean shippingAllowed, boolean active)
-		throws PortalException {
-
-		_portletResourcePermission.check(
-			getPermissionChecker(), groupId,
-			CommerceActionKeys.MANAGE_COMMERCE_COUNTRIES);
+		long groupId, boolean shippingAllowed, boolean active) {
 
 		return commerceCountryLocalService.getShippingCommerceCountries(
 			groupId, shippingAllowed, active);

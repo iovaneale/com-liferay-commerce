@@ -75,9 +75,10 @@ public class CommercePriceListServiceWrapper implements CommercePriceListService
 
 	@Override
 	public com.liferay.commerce.price.list.model.CommercePriceList fetchByExternalReferenceCode(
-		String externalReferenceCode)
+		long companyId, String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _commercePriceListService.fetchByExternalReferenceCode(externalReferenceCode);
+		return _commercePriceListService.fetchByExternalReferenceCode(companyId,
+			externalReferenceCode);
 	}
 
 	@Override
@@ -119,12 +120,6 @@ public class CommercePriceListServiceWrapper implements CommercePriceListService
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _commercePriceListService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.search.Hits search(
-		com.liferay.portal.kernel.search.SearchContext searchContext) {
-		return _commercePriceListService.search(searchContext);
 	}
 
 	@Override

@@ -81,9 +81,11 @@ public class CommercePriceListServiceUtil {
 	}
 
 	public static com.liferay.commerce.price.list.model.CommercePriceList fetchByExternalReferenceCode(
-		String externalReferenceCode)
+		long companyId, String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().fetchByExternalReferenceCode(externalReferenceCode);
+		return getService()
+				   .fetchByExternalReferenceCode(companyId,
+			externalReferenceCode);
 	}
 
 	public static com.liferay.commerce.price.list.model.CommercePriceList fetchCommercePriceList(
@@ -119,11 +121,6 @@ public class CommercePriceListServiceUtil {
 	*/
 	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static com.liferay.portal.kernel.search.Hits search(
-		com.liferay.portal.kernel.search.SearchContext searchContext) {
-		return getService().search(searchContext);
 	}
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult<com.liferay.commerce.price.list.model.CommercePriceList> searchCommercePriceLists(

@@ -18,6 +18,7 @@ import com.liferay.commerce.constants.CommerceOrderConstants;
 import com.liferay.commerce.constants.CommercePortletKeys;
 import com.liferay.commerce.constants.CommerceWebKeys;
 import com.liferay.commerce.context.CommerceContext;
+import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.order.CommerceOrderHttpHelper;
 import com.liferay.commerce.organization.service.CommerceOrganizationLocalService;
@@ -67,7 +68,19 @@ public class CommerceOrderHttpHelperImpl implements CommerceOrderHttpHelper {
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
+		CommerceContext commerceContext = _getCommerceContext(
+			httpServletRequest);
+
 		CommerceOrder commerceOrder = null;
+
+		long commerceCurrencyId = 0;
+
+		CommerceCurrency commerceCurrency =
+			commerceContext.getCommerceCurrency();
+
+		if (commerceCurrency != null) {
+			commerceCurrencyId = commerceCurrency.getCommerceCurrencyId();
+		}
 
 		Organization organization =
 			_commerceOrganizationHelper.getCurrentOrganization(
@@ -76,11 +89,12 @@ public class CommerceOrderHttpHelperImpl implements CommerceOrderHttpHelper {
 		if (organization != null) {
 			commerceOrder = _commerceOrderService.addOrganizationCommerceOrder(
 				organization.getGroupId(), themeDisplay.getSiteGroupId(),
-				organization.getOrganizationId(), 0, null);
+				organization.getOrganizationId(), commerceCurrencyId, 0, null);
 		}
 		else {
 			commerceOrder = _commerceOrderLocalService.addUserCommerceOrder(
-				themeDisplay.getScopeGroupId(), themeDisplay.getUserId());
+				themeDisplay.getScopeGroupId(), themeDisplay.getUserId(),
+				themeDisplay.getUserId(), commerceCurrencyId);
 		}
 
 		setCurrentCommerceOrder(httpServletRequest, commerceOrder);
@@ -107,17 +121,9 @@ public class CommerceOrderHttpHelperImpl implements CommerceOrderHttpHelper {
 		long groupId = _portal.getScopeGroupId(httpServletRequest);
 
 		long plid = _portal.getPlidFromPortletId(
-			groupId, CommercePortletKeys.COMMERCE_CART_CONTENT);
-
-		if (plid > 0) {
-			return _getPortletURL(
-				httpServletRequest, CommercePortletKeys.COMMERCE_CART_CONTENT);
-		}
-
-		plid = _portal.getPlidFromPortletId(
 			groupId, CommercePortletKeys.COMMERCE_ORDER_CONTENT);
 
-		if (plid > 0) {
+		if ((plid > 0) && (commerceOrder != null) && !commerceOrder.isOpen()) {
 			PortletURL portletURL = _getPortletURL(
 				httpServletRequest, CommercePortletKeys.COMMERCE_ORDER_CONTENT);
 
@@ -130,6 +136,14 @@ public class CommerceOrderHttpHelperImpl implements CommerceOrderHttpHelper {
 			}
 
 			return portletURL;
+		}
+
+		plid = _portal.getPlidFromPortletId(
+			groupId, CommercePortletKeys.COMMERCE_CART_CONTENT);
+
+		if (plid > 0) {
+			return _getPortletURL(
+				httpServletRequest, CommercePortletKeys.COMMERCE_CART_CONTENT);
 		}
 
 		plid = _portal.getPlidFromPortletId(

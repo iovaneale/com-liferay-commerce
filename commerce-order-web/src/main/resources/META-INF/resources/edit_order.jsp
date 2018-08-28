@@ -22,7 +22,13 @@ CommerceOrderEditDisplayContext commerceOrderEditDisplayContext = (CommerceOrder
 CommerceOrder commerceOrder = commerceOrderEditDisplayContext.getCommerceOrder();
 
 portletDisplay.setShowBackIcon(true);
-portletDisplay.setURLBack(redirect);
+
+if (Validator.isNull(redirect)) {
+	portletDisplay.setURLBack(String.valueOf(renderResponse.createRenderURL()));
+}
+else {
+	portletDisplay.setURLBack(redirect);
+}
 
 String title = null;
 

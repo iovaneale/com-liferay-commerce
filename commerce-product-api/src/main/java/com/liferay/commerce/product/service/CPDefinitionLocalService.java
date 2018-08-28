@@ -133,6 +133,24 @@ public interface CPDefinitionLocalService extends BaseLocalService,
 		int displayDateYear, int displayDateHour, int displayDateMinute,
 		int expirationDateMonth, int expirationDateDay, int expirationDateYear,
 		int expirationDateHour, int expirationDateMinute, boolean neverExpire,
+		String defaultSku, ServiceContext serviceContext)
+		throws PortalException;
+
+	@Indexable(type = IndexableType.REINDEX)
+	public CPDefinition addCPDefinition(Map<Locale, String> nameMap,
+		Map<Locale, String> shortDescriptionMap,
+		Map<Locale, String> descriptionMap, Map<Locale, String> urlTitleMap,
+		Map<Locale, String> metaTitleMap,
+		Map<Locale, String> metaDescriptionMap,
+		Map<Locale, String> metaKeywordsMap, String productTypeName,
+		boolean ignoreSKUCombinations, boolean shippable, boolean freeShipping,
+		boolean shipSeparately, double shippingExtraPrice, double width,
+		double height, double depth, double weight, long cpTaxCategoryId,
+		boolean taxExempt, boolean telcoOrElectronics, String ddmStructureKey,
+		boolean published, int displayDateMonth, int displayDateDay,
+		int displayDateYear, int displayDateHour, int displayDateMinute,
+		int expirationDateMonth, int expirationDateDay, int expirationDateYear,
+		int expirationDateHour, int expirationDateMinute, boolean neverExpire,
 		String defaultSku, String externalReferenceCode,
 		ServiceContext serviceContext) throws PortalException;
 
@@ -255,11 +273,22 @@ public interface CPDefinitionLocalService extends BaseLocalService,
 		Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public CPDefinition fetchByExternalReferenceCode(
+	public CPDefinition fetchByExternalReferenceCode(long companyId,
 		String externalReferenceCode);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public CPDefinition fetchCPDefinition(long CPDefinitionId);
+
+	/**
+	* Returns the cp definition with the matching external reference code and company.
+	*
+	* @param companyId the primary key of the company
+	* @param externalReferenceCode the cp definition's external reference code
+	* @return the matching cp definition, or <code>null</code> if a matching cp definition could not be found
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CPDefinition fetchCPDefinitionByReferenceCode(long companyId,
+		String externalReferenceCode);
 
 	/**
 	* Returns the cp definition matching the UUID and group.
@@ -392,6 +421,9 @@ public interface CPDefinitionLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getCPDefinitionsCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getCPDefinitionsCount(long groupId, int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getCPDefinitionsCount(long groupId, String productTypeName,

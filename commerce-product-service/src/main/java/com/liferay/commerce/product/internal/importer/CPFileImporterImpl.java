@@ -20,18 +20,25 @@ import com.liferay.commerce.product.importer.CPFileImporter;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.document.library.kernel.util.DLUtil;
+import com.liferay.dynamic.data.mapping.io.DDMFormJSONDeserializer;
+import com.liferay.dynamic.data.mapping.model.DDMForm;
+import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.model.DDMStructureConstants;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
+import com.liferay.dynamic.data.mapping.model.DDMTemplateConstants;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMTemplateLocalService;
-import com.liferay.dynamic.data.mapping.util.DefaultDDMStructureHelper;
+import com.liferay.dynamic.data.mapping.util.DDM;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -61,12 +68,14 @@ import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.TextFormatter;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.impl.ThemeSettingImpl;
@@ -77,8 +86,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
@@ -102,7 +111,7 @@ public class CPFileImporterImpl implements CPFileImporter {
 	public static final String IMG_TAG =
 		"<img alt='' src='%s' data-fileentryid='%s' />";
 
-	public static final String LOCALE_PLACEHOLDER = "[$LOCALE$]";
+	public static final String LOCALE_PLACEHOLDER = "[£LOCALE£]";
 
 	@Override
 	public void cleanLayouts(ServiceContext serviceContext)
@@ -166,6 +175,11 @@ public class CPFileImporterImpl implements CPFileImporter {
 			ServiceContext serviceContext)
 		throws Exception {
 
+		if (file == null) {
+			return _ddmTemplateLocalService.fetchTemplate(
+				serviceContext.getScopeGroupId(), classNameId, getKey(name));
+		}
+
 		FileInputStream fileInputStream = new FileInputStream(file);
 
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(
@@ -173,28 +187,9 @@ public class CPFileImporterImpl implements CPFileImporter {
 
 		String script = StringUtil.read(bufferedInputStream);
 
-		Map<Locale, String> nameMap = new HashMap<>();
-
-		nameMap.put(serviceContext.getLocale(), name);
-
-		DDMTemplate ddmTemplate = _ddmTemplateLocalService.fetchTemplate(
-			serviceContext.getScopeGroupId(), classNameId, getKey(name));
-
-		if (ddmTemplate == null) {
-			ddmTemplate = _ddmTemplateLocalService.addTemplate(
-				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
-				classNameId, classPK, resourceClassNameId, getKey(name),
-				nameMap, null, type, mode, language, script, true, false,
-				StringPool.BLANK, null, serviceContext);
-		}
-		else {
-			ddmTemplate = _ddmTemplateLocalService.updateTemplate(
-				serviceContext.getUserId(), ddmTemplate.getTemplateId(),
-				classPK, nameMap, null, type, mode, language, script, true,
-				serviceContext);
-		}
-
-		return ddmTemplate;
+		return fetchOrAddDDMTemplate(
+			classNameId, classPK, resourceClassNameId, name, type, mode,
+			language, script, serviceContext);
 	}
 
 	@Override
@@ -284,7 +279,6 @@ public class CPFileImporterImpl implements CPFileImporter {
 		throws Exception {
 
 		String articleId = jsonObject.getString("articleId");
-		String content = jsonObject.getString("content");
 		String ddmStructureKey = jsonObject.getString("ddmStructureKey");
 		String ddmTemplateKey = jsonObject.getString("ddmTemplateKey");
 		String description = jsonObject.getString("description");
@@ -300,11 +294,21 @@ public class CPFileImporterImpl implements CPFileImporter {
 			return journalArticle;
 		}
 
-		String ddmStructureFileName =
-			dependenciesFilePath + ddmStructureKey + ".xml";
+		DDMStructure ddmStructure = fetchOrAddDDMStructure(
+			ddmStructureKey, classLoader,
+			dependenciesFilePath + ddmStructureKey + ".json", serviceContext);
 
-		fetchOrAddDDMStructure(
-			ddmStructureKey, classLoader, ddmStructureFileName, serviceContext);
+		InputStream inputStream = classLoader.getResourceAsStream(
+			dependenciesFilePath + ddmTemplateKey + ".ftl");
+
+		if (inputStream != null) {
+			fetchOrAddDDMTemplate(
+				_portal.getClassNameId(DDMStructure.class),
+				ddmStructure.getStructureId(),
+				_portal.getClassNameId(JournalArticle.class), ddmTemplateKey,
+				DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY, null, "ftl",
+				StringUtil.read(inputStream), serviceContext);
+		}
 
 		Locale locale = serviceContext.getLocale();
 
@@ -313,6 +317,9 @@ public class CPFileImporterImpl implements CPFileImporter {
 
 		titleMap.put(locale, title);
 		descriptionMap.put(locale, description);
+
+		String content = StringUtil.read(
+			classLoader, dependenciesFilePath + articleId + ".xml");
 
 		content = getNormalizedContent(
 			content, classLoader, dependenciesFilePath, serviceContext);
@@ -454,13 +461,50 @@ public class CPFileImporterImpl implements CPFileImporter {
 			return ddmStructure;
 		}
 
-		_defaultDDMStructureHelper.addDDMStructures(
-			serviceContext.getUserId(), serviceContext.getScopeGroupId(),
-			classNameId, classLoader, ddmStructureFileName, serviceContext);
+		Map<Locale, String> nameMap = Collections.singletonMap(
+			serviceContext.getLocale(),
+			TextFormatter.format(ddmStructureKey, TextFormatter.J));
 
-		return _ddmStructureLocalService.fetchStructure(
-			serviceContext.getScopeGroupId(), classNameId, ddmStructureKey,
-			true);
+		String json = StringUtil.read(classLoader, ddmStructureFileName);
+
+		DDMForm ddmForm = _ddmFormJSONDeserializer.deserialize(json);
+
+		DDMFormLayout ddmFormLayout = _ddm.getDefaultDDMFormLayout(ddmForm);
+
+		return _ddmStructureLocalService.addStructure(
+			serviceContext.getUserId(), serviceContext.getScopeGroupId(), 0,
+			classNameId, ddmStructureKey, nameMap, null, ddmForm, ddmFormLayout,
+			"json", DDMStructureConstants.TYPE_DEFAULT, serviceContext);
+	}
+
+	protected DDMTemplate fetchOrAddDDMTemplate(
+			long classNameId, long classPK, long resourceClassNameId,
+			String name, String type, String mode, String language,
+			String script, ServiceContext serviceContext)
+		throws PortalException {
+
+		Map<Locale, String> nameMap = new HashMap<>();
+
+		nameMap.put(serviceContext.getLocale(), name);
+
+		DDMTemplate ddmTemplate = _ddmTemplateLocalService.fetchTemplate(
+			serviceContext.getScopeGroupId(), classNameId, getKey(name));
+
+		if (ddmTemplate == null) {
+			ddmTemplate = _ddmTemplateLocalService.addTemplate(
+				serviceContext.getUserId(), serviceContext.getScopeGroupId(),
+				classNameId, classPK, resourceClassNameId, getKey(name),
+				nameMap, null, type, mode, language, script, true, false,
+				StringPool.BLANK, null, serviceContext);
+		}
+		else {
+			ddmTemplate = _ddmTemplateLocalService.updateTemplate(
+				serviceContext.getUserId(), ddmTemplate.getTemplateId(),
+				classPK, nameMap, null, type, mode, language, script, true,
+				serviceContext);
+		}
+
+		return ddmTemplate;
 	}
 
 	protected FileEntry fetchOrAddFileEntry(
@@ -540,34 +584,38 @@ public class CPFileImporterImpl implements CPFileImporter {
 			String dependenciesFilePath, ServiceContext serviceContext)
 		throws Exception {
 
-		Set<String> placeHolders = new HashSet<>();
+		content = _replaceJournalArticleImages(
+			content, _journalArticleHTMLImagePattern,
+			fileEntry -> {
+				String previewURL = DLUtil.getDownloadURL(
+					fileEntry, fileEntry.getLatestFileVersion(), null,
+					StringPool.BLANK, false, false);
 
-		Matcher matcher = _placeholderPattern.matcher(content);
+				return String.format(
+					IMG_TAG, previewURL,
+					String.valueOf(fileEntry.getFileEntryId()));
+			},
+			classLoader, dependenciesFilePath, serviceContext);
 
-		while (matcher.find()) {
-			placeHolders.add(matcher.group());
-		}
+		content = _replaceJournalArticleImages(
+			content, _journalArticleJSONImagePattern,
+			fileEntry -> {
+				JSONObject jsonObject = _jsonFactory.createJSONObject();
 
-		for (String placeHolder : placeHolders) {
-			String fileName = placeHolder.substring(
-				2, placeHolder.length() - 2);
+				jsonObject.put("alt", fileEntry.getTitle());
+				jsonObject.put("groupId", fileEntry.getGroupId());
+				jsonObject.put("name", fileEntry.getFileName());
+				jsonObject.put("title", fileEntry.getTitle());
+				jsonObject.put("type", "document");
+				jsonObject.put("uuid", fileEntry.getUuid());
 
-			FileEntry fileEntry = fetchOrAddFileEntry(
-				classLoader, dependenciesFilePath, fileName, serviceContext);
-
-			String previewURL = DLUtil.getDownloadURL(
-				fileEntry, fileEntry.getLatestFileVersion(), null,
-				StringPool.BLANK, false, false);
-
-			String imgHtmlTag = String.format(
-				IMG_TAG, previewURL,
-				String.valueOf(fileEntry.getFileEntryId()));
-
-			content = content.replace(placeHolder, imgHtmlTag);
-		}
+				return jsonObject.toJSONString();
+			},
+			classLoader, dependenciesFilePath, serviceContext);
 
 		content = content.replace(
-			LOCALE_PLACEHOLDER, String.valueOf(serviceContext.getLocale()));
+			LOCALE_PLACEHOLDER,
+			LocaleUtil.toLanguageId(serviceContext.getLocale()));
 
 		return content;
 	}
@@ -763,14 +811,49 @@ public class CPFileImporterImpl implements CPFileImporter {
 		}
 	}
 
+	private String _replaceJournalArticleImages(
+			String content, Pattern pattern,
+			UnsafeFunction<FileEntry, String, Exception> replacementFunction,
+			ClassLoader classLoader, String dependenciesFilePath,
+			ServiceContext serviceContext)
+		throws Exception {
+
+		StringBuffer sb = new StringBuffer();
+
+		Matcher matcher = pattern.matcher(content);
+
+		while (matcher.find()) {
+			String fileName = matcher.group(1);
+
+			FileEntry fileEntry = fetchOrAddFileEntry(
+				classLoader, dependenciesFilePath, fileName, serviceContext);
+
+			String replacement = replacementFunction.apply(fileEntry);
+
+			matcher.appendReplacement(sb, replacement);
+		}
+
+		matcher.appendTail(sb);
+
+		return sb.toString();
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		CPFileImporterImpl.class);
 
-	private static final Pattern _placeholderPattern = Pattern.compile(
-		"\\[%[^\\[%]+%\\]", Pattern.CASE_INSENSITIVE);
+	private static final Pattern _journalArticleHTMLImagePattern =
+		Pattern.compile("\\[%([^\\[%]+)%\\]");
+	private static final Pattern _journalArticleJSONImagePattern =
+		Pattern.compile("\\[\\$([^\\[%]+)\\$\\]");
 
 	@Reference
 	private AssetEntryLocalService _assetEntryLocalService;
+
+	@Reference
+	private DDM _ddm;
+
+	@Reference
+	private DDMFormJSONDeserializer _ddmFormJSONDeserializer;
 
 	@Reference
 	private DDMStructureLocalService _ddmStructureLocalService;
@@ -779,13 +862,13 @@ public class CPFileImporterImpl implements CPFileImporter {
 	private DDMTemplateLocalService _ddmTemplateLocalService;
 
 	@Reference
-	private DefaultDDMStructureHelper _defaultDDMStructureHelper;
-
-	@Reference
 	private DLAppLocalService _dlAppLocalService;
 
 	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;

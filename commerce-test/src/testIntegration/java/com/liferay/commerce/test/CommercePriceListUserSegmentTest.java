@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.test.util.RoleTestUtil;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -43,6 +44,7 @@ import org.frutilla.FrutillaRule;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,13 +52,16 @@ import org.junit.runner.RunWith;
 /**
  * @author Luca Pellizzon
  */
+@Ignore
 @RunWith(Arquillian.class)
 public class CommercePriceListUserSegmentTest {
 
 	@ClassRule
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
-		new LiferayIntegrationTestRule();
+		new AggregateTestRule(
+			new LiferayIntegrationTestRule(),
+			PermissionCheckerTestRule.INSTANCE);
 
 	@Before
 	public void setUp() throws Exception {

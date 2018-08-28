@@ -1,6 +1,5 @@
 <definition component-name="portal-commerce">
 	<property name="portal.upstream" value="true" />
-	<property name="test.run.environment" value="EE" />
 	<property name="testray.main.component.name" value="Commerce" />
 
 	<set-up>
@@ -12,7 +11,7 @@
 	</set-up>
 
 	<tear-down>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
+		<var method="PropsUtil#get('test.portal.instance')" name="testPortalInstance" />
 
 		<if>
 			<equals arg1="${testPortalInstance}" arg2="true" />
@@ -20,12 +19,12 @@
 				<execute macro="PortalInstances#tearDownCP" />
 			</then>
 			<else>
-				<execute macro="CommerceConfiguration#commerceTearDown" />
+				<execute macro="CommerceConfiguration#commerceStoreFrontTearDown" />
 			</else>
 		</if>
 	</tear-down>
 
-	<command name="ViewFrontStoreSimpleProduct">
+	<command name="ViewStoreFrontSimpleProduct">
 		<property name="portal.acceptance" value="true" />
 
 		<execute macro="ProductMenu#gotoSitesCommerce">
@@ -42,7 +41,7 @@
 
 		<execute macro="CPCommerceCatalog#newOptionsEntry">
 			<var name="optionDescription" value="Option Description" />
-			<var name="optionFieldType" value="Select" />
+			<var name="optionFieldType" value="Select from List" />
 			<var name="optionName" value="Color" />
 			<var name="optionValuesList" value="Black,Blue,White" />
 			<var name="valuePriority" value="1" />

@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -49,8 +48,8 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Andrea Di Giorgi
  */
-public class CPDefinitionSpecificationOptionValueDisplayContext extends
-	BaseCPDefinitionsSearchContainerDisplayContext
+public class CPDefinitionSpecificationOptionValueDisplayContext
+	extends BaseCPDefinitionsSearchContainerDisplayContext
 		<CPDefinitionSpecificationOptionValue> {
 
 	public CPDefinitionSpecificationOptionValueDisplayContext(
@@ -207,15 +206,11 @@ public class CPDefinitionSpecificationOptionValueDisplayContext extends
 
 		List<CPDefinitionSpecificationOptionValue> results =
 			_cpDefinitionSpecificationOptionValueService.
-				getCPDefinitionSpecificationOptionValues(getCPDefinitionId());
+				getCPDefinitionSpecificationOptionValues(
+					getCPDefinitionId(), searchContainer.getStart(),
+					searchContainer.getEnd(), orderByComparator);
 
 		searchContainer.setTotal(results.size());
-
-		Collections.sort(results, orderByComparator);
-
-		results = ListUtil.subList(
-			results, searchContainer.getStart(), searchContainer.getEnd());
-
 		searchContainer.setResults(results);
 
 		return searchContainer;

@@ -15,7 +15,6 @@
 package com.liferay.commerce.payment.engine.paypal.internal;
 
 import com.liferay.commerce.currency.model.CommerceCurrency;
-import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
 import com.liferay.commerce.exception.CommercePaymentEngineException;
 import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.model.CommerceCountry;
@@ -61,6 +60,8 @@ import com.paypal.api.payments.RedirectUrls;
 import com.paypal.api.payments.ShippingAddress;
 import com.paypal.api.payments.Transaction;
 import com.paypal.base.rest.APIContext;
+
+import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -237,12 +238,15 @@ public class PayPalCommercePaymentEngine implements CommercePaymentEngine {
 
 		Details details = new Details();
 
-		details.setShipping(String.valueOf(commerceOrder.getShippingAmount()));
-		details.setSubtotal(String.valueOf(commerceOrder.getSubtotal()));
+		details.setShipping(
+			_PAY_PAL_DECIMAL_FORMAT.format(commerceOrder.getShippingAmount()));
+		details.setSubtotal(
+			_PAY_PAL_DECIMAL_FORMAT.format(commerceOrder.getSubtotal()));
 
 		amount.setDetails(details);
 
-		amount.setTotal(String.valueOf(commerceOrder.getTotal()));
+		amount.setTotal(
+			_PAY_PAL_DECIMAL_FORMAT.format(commerceOrder.getTotal()));
 
 		return amount;
 	}
@@ -311,7 +315,8 @@ public class PayPalCommercePaymentEngine implements CommercePaymentEngine {
 			item.setDescription(cpDefinition.getShortDescription(languageId));
 			item.setName(commerceOrderItem.getName(languageId));
 			item.setPrice(
-				String.valueOf(commerceOrderItem.getUnitPriceMoney()));
+				_PAY_PAL_DECIMAL_FORMAT.format(
+					commerceOrderItem.getUnitPrice()));
 			item.setQuantity(String.valueOf(commerceOrderItem.getQuantity()));
 			item.setSku(commerceOrderItem.getSku());
 
@@ -370,14 +375,6 @@ public class PayPalCommercePaymentEngine implements CommercePaymentEngine {
 			ServiceContext serviceContext)
 		throws Exception {
 
-		CommerceCurrency commerceCurrency =
-			_commerceCurrencyLocalService.fetchPrimaryCommerceCurrency(
-				commerceOrder.getSiteGroupId());
-
-		if (commerceCurrency == null) {
-			throw new CommercePaymentEngineException.MustSetPrimaryCurrency();
-		}
-
 		APIContext apiContext = _getAPIContext(commerceOrder);
 
 		Payment payment = new Payment();
@@ -399,7 +396,8 @@ public class PayPalCommercePaymentEngine implements CommercePaymentEngine {
 
 		payment.setTransactions(
 			_getTransactions(
-				commerceOrder, commerceCurrency, serviceContext.getLocale()));
+				commerceOrder, commerceOrder.getCommerceCurrency(),
+				serviceContext.getLocale()));
 
 		payment = payment.create(apiContext);
 
@@ -424,8 +422,8 @@ public class PayPalCommercePaymentEngine implements CommercePaymentEngine {
 			payment.toJSON(), url);
 	}
 
-	@Reference
-	private CommerceCurrencyLocalService _commerceCurrencyLocalService;
+	private static final DecimalFormat _PAY_PAL_DECIMAL_FORMAT =
+		new DecimalFormat("#,###.00");
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;

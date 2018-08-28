@@ -15,11 +15,14 @@
 package com.liferay.commerce.internal.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.commerce.currency.model.CommerceCurrency;
+import com.liferay.commerce.currency.service.CommerceCurrencyLocalServiceUtil;
 import com.liferay.commerce.internal.search.CommerceOrderItemIndexer;
 import com.liferay.commerce.internal.test.util.CommerceTestUtil;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.CommerceOrderItem;
 import com.liferay.commerce.product.model.CPInstance;
+import com.liferay.commerce.product.service.CPInstanceLocalService;
 import com.liferay.commerce.product.test.util.CPTestUtil;
 import com.liferay.commerce.service.CommerceOrderItemLocalService;
 import com.liferay.petra.string.StringPool;
@@ -39,6 +42,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +51,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,6 +59,7 @@ import org.junit.runner.RunWith;
 /**
  * @author Andrea Di Giorgi
  */
+@Ignore
 @RunWith(Arquillian.class)
 @Sync
 public class CommerceOrderItemIndexerTest {
@@ -63,6 +69,7 @@ public class CommerceOrderItemIndexerTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
+			PermissionCheckerTestRule.INSTANCE,
 			SynchronousDestinationTestRule.INSTANCE);
 
 	@Before
@@ -86,16 +93,27 @@ public class CommerceOrderItemIndexerTest {
 
 		CommerceOrderItem[] commerceOrderItems = new CommerceOrderItem[count];
 
+		CommerceCurrency commerceCurrency =
+			CommerceCurrencyLocalServiceUtil.fetchPrimaryCommerceCurrency(
+				_group.getGroupId());
+
 		CommerceOrder commerceOrder = CommerceTestUtil.addUserCommerceOrder(
-			_group.getGroupId());
+			_group.getGroupId(), 0, commerceCurrency.getCommerceCurrencyId());
 
 		for (int i = 0; i < count; i++) {
 			CPInstance cpInstance = CPTestUtil.addCPInstance(
 				commerceOrder.getGroupId());
 
+			cpInstance.setPurchasable(true);
+
+			_cpInstanceLocalService.updateCPInstance(cpInstance);
+
+			CommerceTestUtil.addBackorderCPDefinitionInventory(
+				cpInstance.getCPDefinition());
+
 			commerceOrderItems[i] = CommerceTestUtil.addCommerceOrderItem(
 				commerceOrder.getCommerceOrderId(),
-				cpInstance.getCPInstanceId());
+				cpInstance.getCPInstanceId(), 1);
 		}
 
 		return commerceOrderItems;
@@ -192,6 +210,9 @@ public class CommerceOrderItemIndexerTest {
 
 	@Inject
 	private static IndexerRegistry _indexerRegistry;
+
+	@Inject
+	private CPInstanceLocalService _cpInstanceLocalService;
 
 	@DeleteAfterTestRun
 	private Group _group;
