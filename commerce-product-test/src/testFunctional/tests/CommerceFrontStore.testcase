@@ -1,13 +1,15 @@
 @component-name = "portal-commerce"
 definition {
 
-	property portal.upstream = "false";
+	property portal.upstream = "true";
 	property testray.main.component.name = "Commerce";
 
 	setUp {
 		TestCase.setUpPortalInstance();
 
 		User.firstLoginPG();
+
+		CommerceConfiguration.commerceSiteSetUp();
 
 		CommerceConfiguration.commerceSetUp();
 	}
@@ -23,14 +25,13 @@ definition {
 		}
 	}
 
-	@ignore = "true"
 	test ViewStoreFrontSimpleProduct {
 		property portal.acceptance = "true";
 
 		ProductMenu.gotoPortlet(
 			category = "Commerce",
-			panel = "Site Administration",
-			portlet = "Catalog");
+			panel = "Control Panel",
+			portlet = "Products");
 
 		echo("Creating new Option complete with Values...");
 

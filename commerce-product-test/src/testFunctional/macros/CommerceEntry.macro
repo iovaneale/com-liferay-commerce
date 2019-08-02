@@ -106,14 +106,6 @@ definition {
 			locator1 = "CommerceEntry#DISCOUNT_TARGET_SELECT",
 			value1 = "${discountTarget}");
 
-		Click(locator1 = "Button#SELECT");
-
-		CommerceItemSelector.selectEntry(entryName = "${accountGroup}");
-
-		Click(
-			locator1 = "ItemSelector#ADD_BUTTON",
-			value1 = "Add");
-
 		Type(
 			locator1 = "CommerceEntry#MAXIMUM_DISCOUNT_AMOUNT_FIELD",
 			value1 = "${maximumDiscountAmount}");
@@ -163,14 +155,6 @@ definition {
 		Select(
 			locator1 = "CommerceEntry#CURRENCY_SELECT",
 			value1 = "${currencyCode}");
-
-		Click(locator1 = "CommerceEntry#ACCOUNT_GROUPS_RELS_SELECT");
-
-		CommerceItemSelector.selectEntry(entryName = "${accountGroupName}");
-
-		Click(
-			locator1 = "ItemSelector#ADD_BUTTON",
-			value1 = "Add");
 	}
 
 	macro addNewRegionsEntry {
@@ -273,13 +257,6 @@ definition {
 	}
 
 	macro createNewCurrenciesEntry {
-		ProductMenu.gotoPortlet(
-			category = "Commerce",
-			panel = "Site Administration",
-			portlet = "Settings");
-
-		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Currencies");
-
 		Click(locator1 = "Button#PLUS");
 
 		CommerceEntry.addNewCurrenciesEntry(

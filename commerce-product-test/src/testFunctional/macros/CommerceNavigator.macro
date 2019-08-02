@@ -15,13 +15,22 @@ definition {
 	}
 
 	macro gotoFrontStoreProductPage {
-		Click(locator1 = "CommerceEntry#FRONT_STORE_PRODUCT_LINK");
+		var productNameURL = StringUtil.replace("${productName}", " ", "-");
+		var productNameURL = StringUtil.lowerCase("${productNameURL}");
+
+		WaitForSPARefresh();
+
+		var baseURL = "${baseURL}";
+
+		if (contains("${baseURL}", "{baseURL}")) {
+			var baseURL = PropsUtil.get("portal.url");
+		}
+
+		Open(locator1 = "${baseURL}/web/guest/p/${productNameURL}");
+
 
 		Pause(locator1 = "30000");
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
-
-		SelectWindow(locator1 = "title=${productName} - Product - ${siteName}");
 	}
 
 	macro gotoOptionValues {
