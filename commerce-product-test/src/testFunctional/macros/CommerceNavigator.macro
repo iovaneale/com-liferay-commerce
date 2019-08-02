@@ -28,7 +28,6 @@ definition {
 
 		Open(locator1 = "${baseURL}/web/guest/p/${productNameURL}");
 
-
 		Pause(locator1 = "30000");
 
 	}

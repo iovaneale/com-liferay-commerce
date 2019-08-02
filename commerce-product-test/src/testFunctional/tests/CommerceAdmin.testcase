@@ -80,7 +80,7 @@ definition {
 	test CreateNewCurrency {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "CommerceAdmin#CreateNewCurrency";
-	
+
 		ProductMenu.gotoPortlet(
 			category = "Commerce",
 			panel = "Control Panel",
