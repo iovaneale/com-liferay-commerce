@@ -22,6 +22,7 @@ import com.liferay.commerce.product.util.CPSubscriptionType;
 import com.liferay.commerce.product.util.CPSubscriptionTypeJSPContributor;
 import com.liferay.commerce.product.util.CPSubscriptionTypeJSPContributorRegistry;
 import com.liferay.commerce.product.util.CPSubscriptionTypeRegistry;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.List;
@@ -42,11 +43,12 @@ public class CPDefinitionSubscriptionInfoDisplayContext
 		CPDefinitionService cpDefinitionService,
 		CPSubscriptionTypeJSPContributorRegistry
 			cpSubscriptionTypeJSPContributorRegistry,
-		CPSubscriptionTypeRegistry cpSubscriptionTypeRegistry) {
+		CPSubscriptionTypeRegistry cpSubscriptionTypeRegistry,
+		NPMResolver npmResolver) {
 
 		super(
 			actionHelper, httpServletRequest, commerceCatalogService,
-			cpDefinitionService);
+			cpDefinitionService, npmResolver);
 
 		_cpSubscriptionTypeJSPContributorRegistry =
 			cpSubscriptionTypeJSPContributorRegistry;

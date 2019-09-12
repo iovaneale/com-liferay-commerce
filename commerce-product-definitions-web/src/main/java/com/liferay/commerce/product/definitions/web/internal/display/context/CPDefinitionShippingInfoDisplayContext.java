@@ -21,6 +21,7 @@ import com.liferay.commerce.product.model.CPMeasurementUnit;
 import com.liferay.commerce.product.service.CPDefinitionService;
 import com.liferay.commerce.product.service.CPMeasurementUnitLocalService;
 import com.liferay.commerce.product.service.CommerceCatalogService;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -38,11 +39,12 @@ public class CPDefinitionShippingInfoDisplayContext
 		CommerceCatalogService commerceCatalogService,
 		CommerceCurrencyLocalService commerceCurrencyLocalService,
 		CPDefinitionService cpDefinitionService,
-		CPMeasurementUnitLocalService cpMeasurementUnitLocalService) {
+		CPMeasurementUnitLocalService cpMeasurementUnitLocalService,
+		NPMResolver npmResolver) {
 
 		super(
 			actionHelper, httpServletRequest, commerceCatalogService,
-			cpDefinitionService);
+			cpDefinitionService, npmResolver);
 
 		_commerceCurrencyLocalService = commerceCurrencyLocalService;
 		_cpMeasurementUnitLocalService = cpMeasurementUnitLocalService;

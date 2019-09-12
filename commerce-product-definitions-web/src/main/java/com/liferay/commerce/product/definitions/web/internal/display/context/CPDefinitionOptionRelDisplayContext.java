@@ -26,6 +26,7 @@ import com.liferay.commerce.product.service.CPDefinitionOptionRelService;
 import com.liferay.commerce.product.util.DDMFormFieldTypeUtil;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldType;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesTracker;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
@@ -72,7 +73,7 @@ public class CPDefinitionOptionRelDisplayContext
 			ConfigurationProvider configurationProvider,
 			CPDefinitionOptionRelService cpDefinitionOptionRelService,
 			DDMFormFieldTypeServicesTracker ddmFormFieldTypeServicesTracker,
-			ItemSelector itemSelector)
+			ItemSelector itemSelector, NPMResolver npmResolver)
 		throws PortalException {
 
 		super(
@@ -85,6 +86,7 @@ public class CPDefinitionOptionRelDisplayContext
 		_cpDefinitionOptionRelService = cpDefinitionOptionRelService;
 		_ddmFormFieldTypeServicesTracker = ddmFormFieldTypeServicesTracker;
 		_itemSelector = itemSelector;
+		_npmResolver = npmResolver;
 	}
 
 	public CPDefinitionOptionRel getCPDefinitionOptionRel()
@@ -109,6 +111,12 @@ public class CPDefinitionOptionRelDisplayContext
 		}
 
 		return cpDefinitionOptionRel.getCPDefinitionOptionRelId();
+	}
+
+	public String getCPDefinitionOptionsEditorModuleName() {
+		return _npmResolver.resolveModuleName(
+			"commerce-product-definitions-web/definition_option_rel" +
+				"/CPDefinitionOptionsEditor.es");
 	}
 
 	public String getDDMFormFieldTypeLabel(
@@ -274,5 +282,6 @@ public class CPDefinitionOptionRelDisplayContext
 	private final DDMFormFieldTypeServicesTracker
 		_ddmFormFieldTypeServicesTracker;
 	private final ItemSelector _itemSelector;
+	private final NPMResolver _npmResolver;
 
 }

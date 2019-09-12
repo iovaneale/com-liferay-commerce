@@ -23,6 +23,7 @@ import com.liferay.commerce.product.service.CPDefinitionService;
 import com.liferay.commerce.product.service.CommerceCatalogService;
 import com.liferay.commerce.product.util.CPSubscriptionTypeJSPContributorRegistry;
 import com.liferay.commerce.product.util.CPSubscriptionTypeRegistry;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -113,7 +114,7 @@ public class CPDefinitionSubscriptionScreenNavigationEntry
 					_actionHelper, httpServletRequest, _commerceCatalogService,
 					_cpDefinitionService,
 					_cpSubscriptionTypeJSPContributorRegistry,
-					_cpSubscriptionTypeRegistry);
+					_cpSubscriptionTypeRegistry, _npmResolver);
 
 		httpServletRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -151,6 +152,9 @@ public class CPDefinitionSubscriptionScreenNavigationEntry
 
 	@Reference
 	private JSPRenderer _jspRenderer;
+
+	@Reference
+	private NPMResolver _npmResolver;
 
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.commerce.product.definitions.web)"

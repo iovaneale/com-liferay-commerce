@@ -23,6 +23,7 @@ import com.liferay.commerce.product.definitions.web.portlet.action.ActionHelper;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.service.CPDefinitionService;
 import com.liferay.commerce.product.service.CommerceCatalogService;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
@@ -59,11 +60,12 @@ public class CPDefinitionAccountGroupDisplayContext
 		CommerceCatalogService commerceCatalogService,
 		CPDefinitionService cpDefinitionService, ItemSelector itemSelector,
 		CommerceAccountGroupRelService commerceAccountGroupRelService,
-		CommerceAccountGroupService commerceAccountGroupService) {
+		CommerceAccountGroupService commerceAccountGroupService,
+		NPMResolver npmResolver) {
 
 		super(
 			actionHelper, httpServletRequest, commerceCatalogService,
-			cpDefinitionService);
+			cpDefinitionService, npmResolver);
 
 		_itemSelector = itemSelector;
 		_commerceAccountGroupRelService = commerceAccountGroupRelService;

@@ -19,6 +19,7 @@ import com.liferay.commerce.product.model.CPTaxCategory;
 import com.liferay.commerce.product.service.CPDefinitionService;
 import com.liferay.commerce.product.service.CPTaxCategoryService;
 import com.liferay.commerce.product.service.CommerceCatalogService;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -37,11 +38,11 @@ public class CPDefinitionTaxCategoryDisplayContext
 		ActionHelper actionHelper, HttpServletRequest httpServletRequest,
 		CommerceCatalogService commerceCatalogService,
 		CPDefinitionService cpDefinitionService,
-		CPTaxCategoryService cpTaxCategoryService) {
+		CPTaxCategoryService cpTaxCategoryService, NPMResolver npmResolver) {
 
 		super(
 			actionHelper, httpServletRequest, commerceCatalogService,
-			cpDefinitionService);
+			cpDefinitionService, npmResolver);
 
 		_cpTaxCategoryService = cpTaxCategoryService;
 	}

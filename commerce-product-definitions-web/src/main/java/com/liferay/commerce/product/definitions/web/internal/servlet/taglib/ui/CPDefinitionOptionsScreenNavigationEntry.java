@@ -21,6 +21,7 @@ import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CommerceCatalog;
 import com.liferay.commerce.product.service.CPDefinitionOptionRelService;
 import com.liferay.dynamic.data.mapping.form.field.type.DDMFormFieldTypeServicesTracker;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationCategory;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
@@ -116,7 +117,8 @@ public class CPDefinitionOptionsScreenNavigationEntry
 					new CPDefinitionOptionRelDisplayContext(
 						_actionHelper, httpServletRequest,
 						_configurationProvider, _cpDefinitionOptionRelService,
-						_ddmFormFieldTypeServicesTracker, _itemSelector);
+						_ddmFormFieldTypeServicesTracker, _itemSelector,
+						_npmResolver);
 
 			httpServletRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT,
@@ -157,6 +159,9 @@ public class CPDefinitionOptionsScreenNavigationEntry
 
 	@Reference
 	private JSPRenderer _jspRenderer;
+
+	@Reference
+	private NPMResolver _npmResolver;
 
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.commerce.product.definitions.web)"

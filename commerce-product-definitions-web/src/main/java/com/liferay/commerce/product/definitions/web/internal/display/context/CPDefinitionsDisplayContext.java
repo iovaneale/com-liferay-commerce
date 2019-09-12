@@ -25,6 +25,7 @@ import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.model.CommerceCatalog;
 import com.liferay.commerce.product.service.CPDefinitionService;
 import com.liferay.commerce.product.service.CommerceCatalogService;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.frontend.taglib.servlet.taglib.ManagementBarFilterItem;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -62,7 +63,7 @@ public class CPDefinitionsDisplayContext
 	public CPDefinitionsDisplayContext(
 		ActionHelper actionHelper, HttpServletRequest httpServletRequest,
 		CommerceCatalogService commerceCatalogService,
-		CPDefinitionService cpDefinitionService) {
+		CPDefinitionService cpDefinitionService, NPMResolver npmResolver) {
 
 		super(
 			actionHelper, httpServletRequest,
@@ -72,6 +73,7 @@ public class CPDefinitionsDisplayContext
 
 		_commerceCatalogService = commerceCatalogService;
 		_cpDefinitionService = cpDefinitionService;
+		_npmResolver = npmResolver;
 	}
 
 	public CommerceCatalog fetchCommerceCatalogByGroupId(long groupId)
@@ -102,6 +104,11 @@ public class CPDefinitionsDisplayContext
 		return _commerceCatalogService.searchCommerceCatalogs(
 			cpRequestHelper.getCompanyId(), null, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
+	}
+
+	public String getDefinitionToolbarFilterModuleName() {
+		return _npmResolver.resolveModuleName(
+			"commerce-product-definitions-web/DefinitionToolbarFilter.es");
 	}
 
 	@Override
@@ -275,5 +282,6 @@ public class CPDefinitionsDisplayContext
 
 	private final CommerceCatalogService _commerceCatalogService;
 	private final CPDefinitionService _cpDefinitionService;
+	private final NPMResolver _npmResolver;
 
 }

@@ -20,6 +20,7 @@ import com.liferay.commerce.product.definitions.web.servlet.taglib.ui.CPDefiniti
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.service.CPDefinitionService;
 import com.liferay.commerce.product.service.CommerceCatalogService;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationCategory;
 import com.liferay.frontend.taglib.servlet.taglib.ScreenNavigationEntry;
 import com.liferay.frontend.taglib.servlet.taglib.util.JSPRenderer;
@@ -81,7 +82,7 @@ public class CPDefinitionDetailsScreenNavigationEntry
 		CPDefinitionsDisplayContext cpDefinitionsDisplayContext =
 			new CPDefinitionsDisplayContext(
 				_actionHelper, httpServletRequest, _commerceCatalogService,
-				_cpDefinitionService);
+				_cpDefinitionService, _npmResolver);
 
 		httpServletRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT, cpDefinitionsDisplayContext);
@@ -102,6 +103,9 @@ public class CPDefinitionDetailsScreenNavigationEntry
 
 	@Reference
 	private JSPRenderer _jspRenderer;
+
+	@Reference
+	private NPMResolver _npmResolver;
 
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.commerce.product.definitions.web)"

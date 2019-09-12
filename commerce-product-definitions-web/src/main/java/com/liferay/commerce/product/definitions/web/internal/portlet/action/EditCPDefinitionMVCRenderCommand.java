@@ -21,6 +21,7 @@ import com.liferay.commerce.product.definitions.web.portlet.action.ActionHelper;
 import com.liferay.commerce.product.exception.NoSuchCPDefinitionException;
 import com.liferay.commerce.product.service.CPDefinitionService;
 import com.liferay.commerce.product.service.CommerceCatalogService;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -58,7 +59,8 @@ public class EditCPDefinitionMVCRenderCommand implements MVCRenderCommand {
 			CPDefinitionsDisplayContext cpDefinitionsDisplayContext =
 				new CPDefinitionsDisplayContext(
 					_actionHelper, _portal.getHttpServletRequest(renderRequest),
-					_commerceCatalogService, _cpDefinitionService);
+					_commerceCatalogService, _cpDefinitionService,
+					_npmResolver);
 
 			renderRequest.setAttribute(
 				WebKeys.PORTLET_DISPLAY_CONTEXT, cpDefinitionsDisplayContext);
@@ -96,6 +98,9 @@ public class EditCPDefinitionMVCRenderCommand implements MVCRenderCommand {
 
 	@Reference
 	private CPDefinitionService _cpDefinitionService;
+
+	@Reference
+	private NPMResolver _npmResolver;
 
 	@Reference
 	private Portal _portal;

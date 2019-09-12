@@ -22,6 +22,7 @@ import com.liferay.commerce.product.service.CPDefinitionService;
 import com.liferay.commerce.product.service.CommerceCatalogService;
 import com.liferay.commerce.product.service.CommerceChannelRelService;
 import com.liferay.commerce.product.service.CommerceChannelService;
+import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 
@@ -41,11 +42,12 @@ public class CPDefinitionChannelDisplayContext
 		CommerceCatalogService commerceCatalogService,
 		CPDefinitionService cpDefinitionService,
 		CommerceChannelRelService commerceChannelRelService,
-		CommerceChannelService commerceChannelService) {
+		CommerceChannelService commerceChannelService,
+		NPMResolver npmResolver) {
 
 		super(
 			actionHelper, httpServletRequest, commerceCatalogService,
-			cpDefinitionService);
+			cpDefinitionService, npmResolver);
 
 		_commerceChannelRelService = commerceChannelRelService;
 		_commerceChannelService = commerceChannelService;
