@@ -230,7 +230,7 @@ definition {
 
 	macro addOptionsEntry {
 		Type(
-			locator1 = "CommerceEntry#NAME_FIELD",
+			locator1 = "CommerceEntry#NAME_FIELsD",
 			value1 = "${optionName}");
 
 		Type(
