@@ -57,7 +57,13 @@ definition {
 			portlet = "Accounts");
 
 		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
-			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected accounts?");
+			Click(
+				key_accountName = "${accountName}",
+				locator1 = "CommerceEntry#ADMIN_ACCOUNT_ELLIPSIS");
+
+			MenuItem.clickNoError(menuItem = "Delete");
+
+			AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
 		}
 
 		ProductMenu.gotoPortlet(
@@ -289,6 +295,26 @@ definition {
 
 		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
 			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected orders?");
+		}
+	}
+
+	macro commerceWarehousesTearDown {
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Settings");
+
+		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Warehouses");
+
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+
+			Click(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
+
+			MenuItem.clickNoError(menuItem = "Delete");
+
+			AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
 		}
 	}
 
