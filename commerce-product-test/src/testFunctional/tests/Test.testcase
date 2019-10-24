@@ -1,0 +1,43 @@
+@component-name = "portal-commerce"
+definition {
+
+	property portal.upstream = "true";
+	property testray.main.component.name = "Commerce";
+
+	setUp {
+		TestCase.setUpPortalInstance();
+
+		User.firstLoginPG();
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		if ("${testPortalInstance}" == "true") {
+			PortalInstances.tearDownCP();
+		}
+		else {
+			CommerceConfiguration.commerceInitializersTearDown();
+		}
+	}
+
+	test Test {
+
+		ProductMenu.gotoSite(site = "Minium");
+
+		Click(locator1 = "CommerceMinium#ACCOUNT_SELECTOR_DROPDOWN");
+
+		Click(locator1 = "CommerceMinium#ACCOUNT_SELECTOR_VIEW_ALL_ACCOUNTS");
+
+		Click(locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_ACCOUNT_BUTTON");
+
+		Type(
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_NAME",
+			value1 = "Commerce Account");
+
+		Click(locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_PLUS_BUTTON");
+
+		Click(locator1 = "CommerceMinium#MODAL_CREATE_BUTTON");
+	}
+
+}

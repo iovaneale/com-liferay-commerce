@@ -19,7 +19,7 @@ definition {
 	macro deleteEntries {
 		Click(locator1 = "CommerceNavigation#SELECT_ALL_CHECKBOX");
 
-		Click(locator1 = "Button#DELETE");
+		MenuItem.clickNoError(menuItem = "Delete");
 
 		AssertConfirm.waitForConfirmation(value1 = "${deleteMessage}");
 	}

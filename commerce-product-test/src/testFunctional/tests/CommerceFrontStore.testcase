@@ -1,6 +1,7 @@
 @component-name = "portal-commerce"
 definition {
 
+	property portal.acceptance = "true";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Commerce";
@@ -10,7 +11,7 @@ definition {
 
 		User.firstLoginPG();
 
-		CommerceConfiguration.commerceStoreFrontSetUp();
+		CommerceConfiguration.commerceFrontStoreSetUp();
 	}
 
 	tearDown {
@@ -20,11 +21,11 @@ definition {
 			PortalInstances.tearDownCP();
 		}
 		else {
-			CommerceConfiguration.commerceStoreFrontTearDown();
+			CommerceConfiguration.commerceFrontStoreTearDown();
 		}
 	}
 
-	test ViewStoreFrontSimpleProduct {
+	test ViewFrontStoreSimpleProduct {
 		property portal.acceptance = "true";
 
 		ProductMenu.gotoPortlet(
