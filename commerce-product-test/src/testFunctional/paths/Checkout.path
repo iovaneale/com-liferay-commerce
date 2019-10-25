@@ -1,0 +1,135 @@
+<html>
+<head>
+<title>Checkout</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Checkout</td></tr>
+</thead>
+<tbody>
+<!--CART-->
+<tr>
+	<td>COLOR_SELECT</td>
+	<td>//div[@class='form-control select-field-trigger']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SELECT_COLOR</td>
+	<td>//a[contains(text(),'${key_color}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_TO_CART</td>
+	<td>//button[contains(text(),'Add to Cart')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_QUANTITY</td>
+	<td>//select[contains(@id ,"Quantity")]</td>
+	<td></td>
+</tr>
+<!--SKUS-->
+<tr>
+	<td>SEE_ALL_SKUS</td>
+	<td>//a[(@class = " nav-link")]/span[(text() = "SKUs")]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>BLACKSKU</td>
+	<td>//a[(text()= "BLACKSKU")]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SKU_INVENTORY_QUANTITY</td>
+	<td>//input[contains(@name,"quantity")]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SKU_INVENTORY_SAVE_BUTTON</td>
+	<td>//button[(@type="button")]</td>
+	<td></td>
+</tr>
+<!--CHECK CART-->
+<tr>
+	<td>CHECK_COLOR</td>
+	<td>//h6[contains(text(),'${key_checkColor}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECK_PRICE</td>
+	<td>//td[contains(@class,"lfr-unit-price-column") and contains(text(),'${key_checkPrice}')]</td>  <!--FIXARE PATH-->
+	<td></td>
+</tr>
+<tr>
+	<td>CHECK_QUANTITY</td>
+	<td>//input[contains(@id,"Quantity") and (@value="${key_checkQuantity}")]</td>
+	<td></td>
+</tr>
+<!--CHECK CHECKOUT-->
+<tr>
+	<td>CHECK_TOTAL_PRICE</td>
+	<td>//h3[contains(text(),'Total')]/../../div[contains(@class,'col text-right')]/h3[contains(text(),'${key_checkTotal}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECKOUT_BUTTON</td>
+	<td>//a[contains(@class,'btn btn-lg btn-default')]/span[contains(text(),'Checkout')]</td>
+	<td></td>
+</tr>
+<!--CHECKOUT-->
+<tr>
+	<td>CHECKOUT_NAME</td>
+	<td>//input[contains(@id,'CommerceCheckoutPortlet_name')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECKOUT_PHONE_NUMBER</td>
+	<td>//input[contains(@id,'CheckoutPortlet_phoneNumber')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECKOUT_ADDRESS</td>
+	<td>//input[contains(@id,'CommerceCheckoutPortlet_street1')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECKOUT_COUNTRY</td>
+	<td>//select[contains(@id,'CommerceCheckoutPortlet_commerceCountryId')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECKOUT_ZIP</td>
+	<td>//input[contains(@id,'CommerceCheckoutPortlet_zip')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECKOUT_CITY</td>
+	<td>//input[contains(@id,'CommerceCheckoutPortlet_city')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECKOUT_REGION</td>
+	<td>//select[contains(@id,'CommerceCheckoutPortlet_commerceRegionId')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECKOUT_CONTINUE_BUTTON</td>
+	<td>//button[contains(@id,'CommerceCheckoutPortlet_continue')]/span[contains(text(),'Continue')]</td>
+	<td></td>
+</tr>
+<!--CHECK ORDERS-->
+<tr>
+	<td>ORDER</td>
+	<td>//td/a[contains(@href,'_CommerceOrderPortlet')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>OPEN_ORDER_SKU</td>
+	<td>//a[contains(text(),'${key_product_SKU}')]/../../td[contains(@class,'lfr-unit-price-column')]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>
