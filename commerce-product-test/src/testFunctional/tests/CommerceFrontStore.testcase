@@ -10,7 +10,9 @@ definition {
 
 		User.firstLoginPG();
 
-		CommerceConfiguration.commerceStoreFrontSetUp();
+		CommerceConfiguration.commerceFrontStoreSetUp();
+
+		CommerceEntry.addWarehouses();
 	}
 
 	tearDown {
@@ -20,11 +22,17 @@ definition {
 			PortalInstances.tearDownCP();
 		}
 		else {
-			CommerceConfiguration.commerceStoreFrontTearDown();
+			CommerceConfiguration.commerceAdminTearDown(accountName = "Test Test");
+
+			CommerceConfiguration.commerceFrontStoreTearDown();
+
+			Navigator.openSpecificURL(url = "http://localhost:8080/web/guest/cart");
+
+			Portlet.deletePG(portletName = "Cart Summary");
 		}
 	}
 
-	test ViewStoreFrontSimpleProduct {
+	test ViewFrontStoreSimpleProduct {
 		property portal.acceptance = "true";
 
 		ProductMenu.gotoPortlet(
@@ -69,7 +77,7 @@ definition {
 
 		CommerceEntry.gotoMenuTab(menuTab = "Images");
 
-		CommerceProductImages.addProductImages(optionValuesList = "Black,Blue,White");
+		// CommerceProductImages.addProductImages(optionValuesList = "Black,Blue,White");
 
 		echo("Asserting all the attributes are correctly shown in Front Store...");
 
@@ -78,6 +86,21 @@ definition {
 		FrontStore.viewProductDetail(
 			FSOptionValuesList = "Black:10.0,Blue:20.0,White:30.0",
 			FSProductName = "Simple T-Shirt");
+
+		Checkout.addQuantity(list = "BLACKSKU,BLUESKU,WHITESKU");
+
+		Checkout.addToCart(list = "Black:1,Blue:2,White:3");
+
+		Checkout.checkOpen(list = "BLACKSKU:$10.00,BLUESKU:$20.00,WHITESKU:$30.00");
+
+		Checkout.checkCart(
+			list = "Black,Blue,White",
+			price = "$10.00,$20.00,$30.00",
+			quantity = "1,2,3");
+
+		Checkout.priceCheckout(list = "10:1,20:2,30:3");
+
+		Checkout.compileCheckout();
 	}
 
 }

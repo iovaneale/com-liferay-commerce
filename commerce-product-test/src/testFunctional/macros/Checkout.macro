@@ -1,0 +1,194 @@
+definition {
+
+	macro addQuantity {
+		property portal.acceptance = "true";
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Products");
+
+		CommerceNavigator.gotoEntry(entryName = "Simple T-Shirt");
+
+		CommerceEntry.gotoMenuTab(menuTab = "SKUs");
+
+		for (var colorSKU : list "${list}") {
+
+			CommerceNavigator.gotoEntry(entryName = "${colorSKU}");
+
+			CommerceEntry.gotoNestedMenu(nestedMenu = "Inventory");
+
+			Type(
+				locator1 = "Checkout#SKU_INVENTORY_QUANTITY",
+				value1 = "10");
+
+			Click(locator1 = "Checkout#SKU_INVENTORY_SAVE_BUTTON");
+
+			CommerceEntry.gotoBreadcrumb(breadcrumb = "SKUs");
+
+		}
+	}
+
+	macro addToCart {
+		property portal.acceptance = "true";
+
+		Navigator.openSpecificURL(url = "http://localhost:8080/web/guest/p/simple-t-shirt");
+
+		for (var colorQuantityAssociation : list "${list}") {
+
+			var color = StringUtil.extractFirst("${colorQuantityAssociation}",":");
+			var quantity = StringUtil.extractLast("${colorQuantityAssociation}",":");
+			key_color = "${color}";
+
+			Click(locator1 = "Checkout#COLOR_SELECT");
+
+			Click(locator1 = "Checkout#SELECT_COLOR");
+
+			Select(
+				locator1 = "Checkout#ADD_QUANTITY",
+				value1 = "${quantity}");
+
+			Click(locator1 = "Checkout#ADD_TO_CART");
+		}
+	}
+
+	macro checkCart {
+		property portal.acceptance = "true";
+
+		Navigator.openSpecificURL(url = "http://localhost:8080/web/guest/cart");
+
+		echo("Checking colors...");
+
+		for (var checkColor : list "${list}") {
+			AssertTextEquals(
+				key_checkColor = "${checkColor}",
+				locator1 = "Checkout#CHECK_COLOR",
+				value1 = "${checkColor}");
+		}
+
+		echo("Colors are correct");
+
+		echo("Checking prices...");
+
+		for (var checkPrice : list "${price}") {
+			AssertTextEquals(
+				key_checkPrice = "${checkPrice}",
+				locator1 = "Checkout#CHECK_PRICE",
+				value1 = "${checkPrice}");
+		}
+
+		echo("Prices are correct");
+
+		echo("Checking quantity...");
+
+		for (var checkQuantity : list "${quantity}") {
+			AssertTextEquals(
+				key_checkQuantity = "${checkQuantity}",
+				locator1 = "Checkout#CHECK_QUANTITY",
+				value1 = "${checkQuantity}");
+		}
+
+		echo("Quantity are correct");
+
+		FrontStore.addWidgetsCommerce(searchPortletList = "Cart Summary");
+	}
+
+	macro checkOpen {
+		property portal.acceptance = "true";
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Orders");
+
+		Click(locator1 = "Checkout#ORDER");
+
+		echo("Checking open order...");
+
+		for (var checkSKUPrice : list "${list}") {
+
+			var openCartSKU= StringUtil.extractFirst("${checkSKUPrice}",":");
+			var openCartPrice= StringUtil.extractLast("${checkSKUPrice}",":");
+
+			key_product_SKU = "${openCartSKU}";
+
+			echo("Checking ${openCartSKU}...");
+
+			AssertTextEquals(
+				key_product_SKU = "${openCartSKU}",
+				locator1 = "Checkout#OPEN_ORDER_SKU",
+				value1 = "${openCartPrice}");
+
+			echo("${openCartSKU} is present and the price ${openCartPrice} is correct");
+		}
+		echo("Open orders are correct");
+	}
+
+	macro compileCheckout {
+		property portal.acceptance = "true";
+
+		Navigator.openSpecificURL(url = "http://localhost:8080/web/guest/checkout");
+
+		Type(
+			locator1 = "Checkout#CHECKOUT_NAME",
+			value1 = "Mario");
+		Type(
+			locator1 = "Checkout#CHECKOUT_PHONE_NUMBER",
+			value1 = "1234567890");
+
+		Type(
+			locator1 = "Checkout#CHECKOUT_ADDRESS",
+			value1 = "via Rossi");
+
+		Select(
+			locator1 = "Checkout#CHECKOUT_COUNTRY",
+			value1 = "Italy");
+
+		Type(
+			locator1 = "Checkout#CHECKOUT_ZIP",
+			value1 = "00100");
+		Type(
+			locator1 = "Checkout#CHECKOUT_CITY",
+			value1 = "Roma");
+
+		Select(
+			locator1 = "Checkout#CHECKOUT_REGION",
+			value1 = "Roma");
+
+		Click(locator1 = "Checkout#CHECKOUT_CONTINUE_BUTTON");
+
+		Click(locator1 = "Checkout#CHECKOUT_CONTINUE_BUTTON");
+	}
+
+	macro priceCheckout {
+		property portal.acceptance = "true";
+
+		Navigator.openSpecificURL(url = "http://localhost:8080/web/guest/cart");
+
+		var totalCheckTemp= "0";
+
+		for (var priceQuantityAssociation : list "${list}") {
+			var shirtPrice = StringUtil.extractFirst("${priceQuantityAssociation}",":");
+			var shirtQuantity = StringUtil.extractLast("${priceQuantityAssociation}",":");
+
+			var shirtPriceProduct = MathUtil.product("${shirtPrice}", "${shirtQuantity}");
+
+			totalCheckTemp = MathUtil.sum("${totalCheckTemp}", "${shirtPriceProduct}");
+		}
+
+		var totalCheck = "$${totalCheckTemp}.00";
+		echo("Total Fixed = ${totalCheck}");
+
+		echo("Checking total price");
+
+		AssertTextEquals(
+			key_checkTotal = "${totalCheck}",
+			locator1 = "Checkout#CHECK_TOTAL_PRICE",
+			value1 = "${totalCheck}");
+
+		echo("Total price are correct");
+
+		Click(locator1 = "Checkout#CHECKOUT_BUTTON");
+	}
+
+}

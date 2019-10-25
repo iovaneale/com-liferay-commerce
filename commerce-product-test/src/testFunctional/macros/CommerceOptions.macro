@@ -34,9 +34,14 @@ definition {
 	}
 
 	macro deleteOptionsEntry {
-		Button.clickDelete();
 
-		AssertConfirm.waitForConfirmation(value1 = "Are you sure to delete?");
+		//Button.clickDelete();
+
+		AssertClickNoError(
+			locator1 = "Button#DELETE",
+			value1 = "Delete");
+
+		AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to delete the selected option?");
 	}
 
 }
