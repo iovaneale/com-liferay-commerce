@@ -1,0 +1,154 @@
+definition {
+
+	macro addExistingMemberWithRoleToAccount {
+
+		Click(
+			key_headerTab = "Members",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_HEADER_TAB");
+
+		Click(
+			key_button = "Invite User",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_MAIN_BUTTON");
+
+		Click(
+			key_userEmailAddress = "${userEmailAddress}",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_PLUS_BUTTON");
+
+		Click(
+			key_button = "Invite User",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_INVITE_USER_MODAL_INVITE_USER_BUTTON");
+
+		Click(
+			key_userEmailAddress = "${userFirstName}",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_MEMBERS_MEMBER");
+
+		Click(
+			key_button = "Roles",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_MAIN_BUTTON");
+
+		Click(
+			key_role = "${userFirstName}",
+			locator1 = "CommerceMinium#ROLES_MODAL_ROLE_CHECKBOX");
+
+		Click(
+			key_button = "Done",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_MAIN_BUTTON");
+	}
+
+	macro addNewAddressToAccount {
+
+		Click(
+			key_headerTab = "Addresses",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_HEADER_TAB");
+
+		Click(locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_ADDRESS_BUTTON");
+
+		Type(
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_ADDRESS",
+			value1 = "${addressAddress}");
+
+		Type(
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_CITY",
+			value1 = "${addressCity}");
+
+		Select(
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_COUNTRY",
+			value1 = "${addressCountry}");
+
+		Type(
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_ZIP_CODE",
+			value1 = "${addressZipCode}");
+
+		Click(locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_ADDRESS_ARROW");
+
+		Type(
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_NAME",
+			value1 = "${addressName}");
+
+		Click(locator1 = "CommerceMinium#MODAL_CREATE_BUTTON");
+	}
+
+	macro createNewAccountViaFront {
+
+		Click(locator1 = "CommerceMinium#ACCOUNT_SELECTOR_DROPDOWN");
+
+		Click(locator1 = "CommerceMinium#ACCOUNT_SELECTOR_VIEW_ALL_ACCOUNTS");
+
+		Click(locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_ACCOUNT_BUTTON");
+
+		Type(
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_NAME",
+			value1 = "${accountName}");
+
+		Click(
+			key_userEmailAddress = "${adminEmailAddress}",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_PLUS_BUTTON");
+
+		Click(locator1 = "CommerceMinium#MODAL_CREATE_BUTTON");
+	}
+
+	macro inviteNewMemberWithRoleToAccount {
+
+		Click(
+			key_headerTab = "Members",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_HEADER_TAB");
+
+		Click(
+			key_button = "Invite User",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_MAIN_BUTTON");
+
+		Type.typeClickAt(
+			locator1 = "CommerceMinium#ADD_ACCOUNT_MODAL_NAME_OR_EMAIL_FIELD",
+			value1 = "${emailAddress}");
+
+		Click(locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_PLUS_BUTTON");
+
+		Click(
+			key_button = "Invite User",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_INVITE_USER_MODAL_INVITE_USER_BUTTON");
+
+		Click(
+			key_emailAddress = "${emailAddress}",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_MEMBERS_MEMBER");
+
+		Click(
+			key_button = "Roles",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_MAIN_BUTTON");
+
+		Click(
+			key_role = "${role}",
+			locator1 = "CommerceMinium#ROLES_MODAL_ROLE_CHECKBOX");
+
+		Click(
+			key_button = "Done",
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_MAIN_BUTTON");
+	}
+
+	macro reviewOrder {
+		Click(
+			key_menuItem = "${menuItem}",
+			locator1 = "CommerceMinium#SIDEBAR_MENU_ITEM");
+
+		Click(
+			key_accountName = "${accountName}",
+			locator1 = "CommerceMinium#PENDING_ORDERS_ENTRY_ACCOUNT_NAME");
+
+		Click(
+			key_accountName = "${accountName}",
+			key_orderAuthor = "${orderAuthor}",
+			locator1 = "CommerceMinium#REVIEW_ORDER_ENTRY");
+
+		AssertTextEquals(
+			locator1 = "CommerceMinium#PENDING_ORDERS_SKU",
+			value1 = "${productSKU}");
+
+		AssertTextEquals(
+			locator1 = "CommerceMinium#PENDING_ORDERS_PRICE",
+			value1 = "$${productPrice}");
+
+		AssertTextEquals(
+			locator1 = "CommerceMinium#PENDING_ORDERS_QUANTITY",
+			value1 = "${productQuantity}");
+	}
+
+}

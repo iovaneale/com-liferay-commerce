@@ -284,6 +284,30 @@ definition {
 		CommerceEntry.selectAssociatedOptionsValue(optionValue = "${optionValue}");
 	}
 
+	macro createAccountAddressFromAdmin {
+		Type(
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_ADDRESS",
+			value1 = "${addressAddress}");
+
+		Type(
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_CITY",
+			value1 = "${addressCity}");
+
+		Select(
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_COUNTRY",
+			value1 = "${addressCountry}");
+
+		Type(
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_ZIP_CODE",
+			value1 = "${addressZipCode}");
+
+		Type(
+			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_NAME",
+			value1 = "${addressName}");
+
+		Click(locator1 = "Button#SAVE");
+	}
+
 	macro createNewAccountGroup {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -415,6 +439,14 @@ definition {
 		}
 
 		Pause(locator1 = "3000");
+	}
+
+	macro selectAccountFromAccountSelector {
+		Click(locator1 = "CommerceMinium#ACCOUNT_SELECTOR_DROPDOWN");
+
+		Click(
+			key_accountName = "${accountName}",
+			locator1 = "CommerceMinium#ACCOUNT_SELECTOR_SELECT_ACCOUNT");
 	}
 
 	macro selectAssociatedOptionsValue {
