@@ -43,19 +43,25 @@ definition {
 			panel = "Control Panel",
 			portlet = "Users and Organizations");
 
-		User.deactivateCP(
-			deactivateType = "Actions",
-			userFirstName = "Commerce");
+		LexiconEntry.gotoEntryMenuItemNoError(
+			menuItem = "Deactivate",
+			rowEntry = "${userFirstName}");
 
-		User.deleteCP(userFirstName = "Commerce");
+		AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to deactivate this?");
+
+		User.deleteCP(userFirstName = "${userFirstName}");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
 			portlet = "Accounts");
 
-		if (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
-			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected accounts?");
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			Click(locator1 = "CommerceEntry#ADMIN_ACCOUNT_ELLIPSIS");
+
+			MenuItem.clickNoError(menuItem = "Delete");
+
+			AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
 		}
 
 		ProductMenu.gotoPortlet(
@@ -63,7 +69,7 @@ definition {
 			panel = "Control Panel",
 			portlet = "Account Groups");
 
-		if (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+		if (IsElementPresent(locator1 = "CommerceNavigation#SELECTABLE_CHECKBOX")) {
 			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected account groups?");
 		}
 
@@ -72,7 +78,7 @@ definition {
 			panel = "Control Panel",
 			portlet = "Channels");
 
-		if (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
 			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected channels?");
 		}
 
@@ -90,7 +96,7 @@ definition {
 			panel = "Control Panel",
 			portlet = "Price Lists");
 
-		if (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
 			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected price lists?");
 		}
 
@@ -99,7 +105,7 @@ definition {
 			panel = "Control Panel",
 			portlet = "Discounts");
 
-		if (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
 			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected discounts?");
 		}
 
@@ -110,20 +116,30 @@ definition {
 
 		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Availability Estimates");
 
-		if (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
-			PortletEntry.deleteViaMenuItem(rowEntry = "New Availability Estimate");
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected availability estimates?");
 		}
 
 		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Countries");
 
-		if (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
-			PortletEntry.deleteViaMenuItem(rowEntry = "New Country");
+		Pagination.changePagination(itemsPerPage = "75");
+
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected countries?");
 		}
 
 		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Currencies");
 
-		if (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
-			PortletEntry.deleteViaMenuItem(rowEntry = "US Dollar");
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected currencies?");
+		}
+
+		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Measurement Units");
+
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			LexiconEntry.gotoEllipsisMenuItemNoError(menuItem = "Delete");
+
+			AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
 		}
 
 		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Measurement Units");
@@ -189,16 +205,16 @@ definition {
 		AssertElementPresent(locator1 = "Message#SUCCESS");
 	}
 
-	macro commerceStoreFrontTearDown {
+	macro commerceFrontStoreTearDown {
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Commerce",
-			panel = "Site Administration",
-			portlet = "Catalog");
+			panel = "Control Panel",
+			portlet = "Products");
 
-		if (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
-			CommerceProducts.moveCatalogEntriesToRecycleBin();
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected products?");
 		}
 
 		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Options");
@@ -206,6 +222,29 @@ definition {
 		Pause(locator1 = "3000");
 
 		CommerceOptions.deleteOptionsEntries();
+
+		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Specifications");
+
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected specification labels?");
+		}
+
+		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Specifications");
+
+		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Specification Groups");
+
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected specification groups?");
+		}
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Channels");
+
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected channels?");
+		}
 
 		User.logoutPG();
 	}
