@@ -1,5 +1,20 @@
 definition {
 
+	macro addInitializerProductToCart {
+		Click(
+			key_productPrice = "${productPrice}",
+			key_productSKU = "${productSKU}",
+			locator1 = "CommerceMinium#ADD_TO_CART_BUTTON");
+
+		Type(
+			locator1 = "CommerceMinium#COMMERCE_QUANTITY_SELECTOR_INPUT",
+			value1 = "${productQuantity}");
+
+		Click(
+			key_productSKU = "${productSKU}",
+			locator1 = "CommerceMinium#ADD_TO_CART_ARROW_BUTTON");
+	}
+
 	macro selectAssociatedFSOptionsValue {
 		Click(locator1 = "CommerceFrontStore#FS_PRODUCT_OPTIONS_SELECT");
 
