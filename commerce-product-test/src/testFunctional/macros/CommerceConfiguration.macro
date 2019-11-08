@@ -210,6 +210,19 @@ definition {
 		User.logoutPG();
 	}
 
+	macro commerceInitializersSetup {
+		ProductMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		User.addCP(
+			userEmailAddress = "commerceuser@liferay.com",
+			userFirstName = "Commerce",
+			userLastName = "User",
+			userScreenName = "commerceuser");
+	}
+
 	macro commerceInitializersTearDown {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
