@@ -126,18 +126,18 @@ definition {
 
 		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Measurement Units");
 
-		if (IsElementPresent(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS", key_rowEntry = "New Dimension Unit")) {
-			PortletEntry.deleteViaMenuItem(rowEntry = "New Dimension Unit");
-		}
-
 		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Weight");
 
-		if (IsElementPresent(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS", key_rowEntry = "New Weight Unit")) {
-			PortletEntry.deleteViaMenuItem(rowEntry = "New Weight Unit");
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			LexiconEntry.gotoEllipsisMenuItemNoError(menuItem = "Delete");
+
+			AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
 		}
+
+		CommerceConfiguration.commerceWarehousesTearDown();
 	}
 
-	macro commerceStoreFrontSetUp {
+	macro commerceFrontStoreSetUp {
 		ProductMenu.gotoPortlet(
 			category = "Commerce",
 			panel = "Site Administration",
@@ -206,6 +206,26 @@ definition {
 		CommerceOptions.deleteOptionsEntries();
 
 		User.logoutPG();
+	}
+
+	macro commerceWarehousesTearDown {
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Settings");
+
+		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Warehouses");
+
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+
+			Click(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
+
+			MenuItem.clickNoError(menuItem = "Delete");
+
+			AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
+		}
 	}
 
 }
