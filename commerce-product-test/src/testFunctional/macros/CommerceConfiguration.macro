@@ -36,6 +36,8 @@ definition {
 	macro commerceAdminTearDown {
 		Navigator.openURL();
 
+		CommerceConfiguration.commerceOrdersTearDown();
+
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -206,6 +208,40 @@ definition {
 		CommerceOptions.deleteOptionsEntries();
 
 		User.logoutPG();
+	}
+
+	macro commerceInitializersTearDown {
+		ProductMenu.gotoPortlet(
+			category = "Sites",
+			panel = "Control Panel",
+			portlet = "Sites");
+
+		Site.deleteAllCP();
+	}
+
+	macro commerceOrdersTearDown {
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Orders");
+
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected orders?");
+		}
+
+		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Pending");
+
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected orders?");
+		}
+
+		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Transmitted");
+
+		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
+			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected orders?");
+		}
 	}
 
 	macro commerceWarehousesTearDown {
