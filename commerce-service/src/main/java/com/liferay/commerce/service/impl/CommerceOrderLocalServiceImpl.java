@@ -47,9 +47,10 @@ import com.liferay.commerce.search.facet.NegatableMultiValueFacet;
 import com.liferay.commerce.service.base.CommerceOrderLocalServiceBaseImpl;
 import com.liferay.commerce.util.CommerceShippingHelper;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -68,7 +69,6 @@ import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.QueryConfig;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.search.SearchException;
-import com.liferay.portal.kernel.search.facet.MultiValueFacet;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -89,6 +89,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -603,12 +604,13 @@ public class CommerceOrderLocalServiceImpl
 	@Override
 	public List<CommerceOrder> getCommerceOrders(
 			long companyId, long groupId, long[] commerceAccountIds,
-			int[] orderStatuses, boolean excludeOrderStatus, int start, int end)
+			String keywords, int[] orderStatuses, boolean excludeOrderStatus,
+			int start, int end)
 		throws PortalException {
 
 		SearchContext searchContext = buildSearchContext(
-			companyId, groupId, commerceAccountIds, excludeOrderStatus,
-			orderStatuses, start, end);
+			companyId, groupId, commerceAccountIds, keywords,
+			excludeOrderStatus, orderStatuses, start, end);
 
 		BaseModelSearchResult<CommerceOrder> baseModelSearchResult =
 			commerceOrderLocalService.searchCommerceOrders(searchContext);
@@ -654,12 +656,13 @@ public class CommerceOrderLocalServiceImpl
 	@Override
 	public long getCommerceOrdersCount(
 			long companyId, long groupId, long[] commerceAccountIds,
-			int[] orderStatuses, boolean excludeOrderStatus)
+			String keywords, int[] orderStatuses, boolean excludeOrderStatus)
 		throws PortalException {
 
 		SearchContext searchContext = buildSearchContext(
-			companyId, groupId, commerceAccountIds, excludeOrderStatus,
-			orderStatuses, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			companyId, groupId, commerceAccountIds, keywords,
+			excludeOrderStatus, orderStatuses, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS);
 
 		return commerceOrderLocalService.searchCommerceOrdersCount(
 			searchContext);
@@ -682,18 +685,19 @@ public class CommerceOrderLocalServiceImpl
 		long groupId, long userId, long commerceAccountId, Integer orderStatus,
 		boolean excludeOrderStatus, String keywords, int start, int end) {
 
-		QueryDefinition<CommerceOrder> queryDefinition =
-			new QueryDefinition<>();
+		try {
+			Group group = groupLocalService.getGroup(groupId);
 
-		queryDefinition.setAttribute("commerceAccountId", commerceAccountId);
-		queryDefinition.setAttribute("excludeOrderStatus", excludeOrderStatus);
-		queryDefinition.setAttribute("groupId", groupId);
-		queryDefinition.setAttribute("keywords", keywords);
-		queryDefinition.setAttribute("orderStatus", orderStatus);
-		queryDefinition.setStart(start);
-		queryDefinition.setEnd(end);
+			return commerceOrderLocalService.getCommerceOrders(
+				group.getCompanyId(), groupId, new long[] {commerceAccountId},
+				keywords, new int[] {CommerceOrderConstants.ORDER_STATUS_OPEN},
+				false, start, end);
+		}
+		catch (PortalException pe) {
+			_log.error(pe, pe);
+		}
 
-		return commerceOrderFinder.findByG_U_C_O(userId, queryDefinition);
+		return Collections.emptyList();
 	}
 
 	/**
@@ -705,16 +709,19 @@ public class CommerceOrderLocalServiceImpl
 		long groupId, long userId, long commerceAccountId, Integer orderStatus,
 		boolean excludeOrderStatus, String keywords) {
 
-		QueryDefinition<CommerceOrder> queryDefinition =
-			new QueryDefinition<>();
+		try {
+			Group group = groupLocalService.getGroup(groupId);
 
-		queryDefinition.setAttribute("commerceAccountId", commerceAccountId);
-		queryDefinition.setAttribute("excludeOrderStatus", excludeOrderStatus);
-		queryDefinition.setAttribute("groupId", groupId);
-		queryDefinition.setAttribute("keywords", keywords);
-		queryDefinition.setAttribute("orderStatus", orderStatus);
+			return (int)commerceOrderLocalService.getCommerceOrdersCount(
+				group.getCompanyId(), groupId, new long[] {commerceAccountId},
+				keywords, new int[] {CommerceOrderConstants.ORDER_STATUS_OPEN},
+				false);
+		}
+		catch (PortalException pe) {
+			_log.error(pe, pe);
+		}
 
-		return commerceOrderFinder.countByG_U_C_O(userId, queryDefinition);
+		return 0;
 	}
 
 	@Override
@@ -1535,8 +1542,8 @@ public class CommerceOrderLocalServiceImpl
 
 	protected SearchContext buildSearchContext(
 			long companyId, long commerceChannelGroupId,
-			long[] commerceAccountIds, boolean negated, int[] orderStatuses,
-			int start, int end)
+			long[] commerceAccountIds, String keywords, boolean negated,
+			int[] orderStatuses, int start, int end)
 		throws PortalException {
 
 		SearchContext searchContext = new SearchContext();
@@ -1544,17 +1551,13 @@ public class CommerceOrderLocalServiceImpl
 		addFacetOrderStatus(negated, orderStatuses, searchContext);
 
 		if (commerceAccountIds != null) {
-			MultiValueFacet multiValueFacet = new MultiValueFacet(
-				searchContext);
-
-			multiValueFacet.setFieldName("commerceAccountId");
-			multiValueFacet.setValues(commerceAccountIds);
-
-			searchContext.addFacet(multiValueFacet);
+			searchContext.setAttribute(
+				"commerceAccountIds", commerceAccountIds);
 		}
 
 		searchContext.setCompanyId(companyId);
 		searchContext.setGroupIds(new long[] {commerceChannelGroupId});
+		searchContext.setKeywords(keywords);
 		searchContext.setStart(start);
 		searchContext.setEnd(end);
 
@@ -1633,7 +1636,11 @@ public class CommerceOrderLocalServiceImpl
 	protected boolean hasWorkflowDefinition(long groupId, long typePK)
 		throws PortalException {
 
-		Group group = groupLocalService.getGroup(groupId);
+		Group group = groupLocalService.fetchGroup(groupId);
+
+		if (group == null) {
+			return false;
+		}
 
 		return workflowDefinitionLinkLocalService.hasWorkflowDefinitionLink(
 			group.getCompanyId(), group.getGroupId(),
@@ -1959,6 +1966,9 @@ public class CommerceOrderLocalServiceImpl
 		commerceOrder.setTotalDiscountPercentageLevel4(
 			discountPercentageLevel4);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CommerceOrderLocalServiceImpl.class);
 
 	@ServiceReference(type = CommerceChannelLocalService.class)
 	private CommerceChannelLocalService _commerceChannelLocalService;

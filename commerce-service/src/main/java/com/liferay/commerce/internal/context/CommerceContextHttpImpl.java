@@ -56,16 +56,25 @@ public class CommerceContextHttpImpl implements CommerceContext {
 		_portal = portal;
 
 		try {
-			_commerceAccountGroupServiceConfiguration =
-				configurationProvider.getConfiguration(
-					CommerceAccountGroupServiceConfiguration.class,
-					new GroupServiceSettingsLocator(
-						portal.getScopeGroupId(httpServletRequest),
-						CommerceAccountConstants.SERVICE_NAME));
+			CommerceChannel commerceChannel = fetchCommerceChannel();
+
+			if (commerceChannel != null) {
+				_commerceAccountGroupServiceConfiguration =
+					configurationProvider.getConfiguration(
+						CommerceAccountGroupServiceConfiguration.class,
+						new GroupServiceSettingsLocator(
+							commerceChannel.getGroupId(),
+							CommerceAccountConstants.SERVICE_NAME));
+			}
 		}
 		catch (PortalException pe) {
 			_log.error(pe, pe);
 		}
+	}
+
+	public CommerceChannel fetchCommerceChannel() throws PortalException {
+		return _commerceChannelLocalService.fetchCommerceChannelBySiteGroupId(
+			getSiteGroupId());
 	}
 
 	@Override
@@ -75,7 +84,7 @@ public class CommerceContextHttpImpl implements CommerceContext {
 		}
 
 		_commerceAccount = _commerceAccountHelper.getCurrentCommerceAccount(
-			_httpServletRequest);
+			getCommerceChannelGroupId(), _httpServletRequest);
 
 		return _commerceAccount;
 	}

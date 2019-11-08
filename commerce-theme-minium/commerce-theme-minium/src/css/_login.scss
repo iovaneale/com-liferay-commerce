@@ -60,7 +60,7 @@
         }
     }
 
-    #_com_liferay_login_web_portlet_LoginPortlet_loginForm {
+    #_com_liferay_login_web_portlet_LoginPortlet_fm, #_com_liferay_login_web_portlet_LoginPortlet_loginForm {
         .btn {
             @include clay-button-variant($gsdc-btn-primary);
 
@@ -106,6 +106,38 @@
         #main-content {
             height: 100%;
 
+            .col-md-12.portlet-column.portlet-column-only {
+                .portlet-content {
+                    height: 100%;
+
+                    a.portlet-icon-back {
+                        display: none;
+                    }
+
+                    .portlet-content-container {
+                        height: 100%;
+
+                        .portlet-body {
+                            height: 100%;
+
+                            .login-container {
+                                height: 100%;
+                                margin: auto;
+                                max-width: 768px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .navigation {
+                margin-bottom: auto;
+
+                .icon-plus, .icon-plus + .taglib-text {
+                    display: none;
+                }
+            }
+
             .row {
                 height: 100%;
                 margin: 0;
@@ -122,14 +154,6 @@
     .portlet-login {
         height: 100%;
 
-        .portlet {
-            margin-bottom: 0;
-
-            .portlet-content-container {
-                padding: 0;
-            }
-        }
-
         .login-container {
             background-color: #FFFFFF;
             display: flex;
@@ -140,12 +164,8 @@
             padding: 20px 75px;
             width: 80%;
 
-            .navigation {
-                margin-bottom: auto;
-
-                ul > li:first-of-type {
-                    display: none;
-                }
+            form {
+                margin-top: auto;
             }
 
             input, label {
@@ -185,10 +205,18 @@
                 input, label {
                     color: #FFF;
                 }
-            }
 
-            form {
-                margin-top: auto;
+                input:focus {
+                    color: #000;
+                }
+            }
+        }
+
+        .portlet {
+            margin-bottom: 0;
+
+            .portlet-content-container {
+                padding: 0;
             }
         }
     }

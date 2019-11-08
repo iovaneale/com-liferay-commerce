@@ -280,14 +280,17 @@ public class CommerceOrderContentDisplayContext {
 		String keywords = ParamUtil.getString(_httpServletRequest, "keywords");
 
 		if (isOpenOrderContentPortlet()) {
-			_commerceOrders = _commerceOrderService.getPendingCommerceOrders(
-				_cpRequestHelper.getChannelGroupId(), getCommerceAccountId(),
-				keywords, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			_commerceOrders =
+				_commerceOrderService.getUserPendingCommerceOrders(
+					_cpRequestHelper.getCompanyId(),
+					_cpRequestHelper.getChannelGroupId(), keywords,
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 		}
 		else {
-			_commerceOrders = _commerceOrderService.getPlacedCommerceOrders(
-				_cpRequestHelper.getChannelGroupId(), getCommerceAccountId(),
-				keywords, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			_commerceOrders = _commerceOrderService.getUserPlacedCommerceOrders(
+				_cpRequestHelper.getCompanyId(),
+				_cpRequestHelper.getChannelGroupId(), keywords,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 		}
 
 		return _commerceOrders;

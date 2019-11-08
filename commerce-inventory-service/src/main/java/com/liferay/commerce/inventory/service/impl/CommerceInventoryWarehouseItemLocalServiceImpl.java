@@ -57,35 +57,37 @@ public class CommerceInventoryWarehouseItemLocalServiceImpl
 			externalReferenceCode = null;
 		}
 
+		CommerceInventoryWarehouseItem commerceInventoryWarehouseItem = null;
+
 		if (Validator.isNotNull(sku)) {
-			CommerceInventoryWarehouseItem commerceInventoryWarehouseItem =
+			commerceInventoryWarehouseItem =
 				commerceInventoryWarehouseItemPersistence.fetchByC_S(
 					commerceInventoryWarehouseId, sku);
 
 			if (commerceInventoryWarehouseItem != null) {
 				throw new DuplicateCommerceInventoryWarehouseItemException(
-					"Duplicated sku code");
+					"Sku code already associated with this Warehouse");
 			}
 		}
 
 		long commerceInventoryWarehouseItemId = counterLocalService.increment();
 
-		CommerceInventoryWarehouseItem commerceInventoryWarehouseItem2 =
+		commerceInventoryWarehouseItem =
 			commerceInventoryWarehouseItemPersistence.create(
 				commerceInventoryWarehouseItemId);
 
-		commerceInventoryWarehouseItem2.setCompanyId(user.getCompanyId());
-		commerceInventoryWarehouseItem2.setUserId(user.getUserId());
-		commerceInventoryWarehouseItem2.setUserName(user.getFullName());
-		commerceInventoryWarehouseItem2.setCommerceInventoryWarehouseId(
+		commerceInventoryWarehouseItem.setCompanyId(user.getCompanyId());
+		commerceInventoryWarehouseItem.setUserId(user.getUserId());
+		commerceInventoryWarehouseItem.setUserName(user.getFullName());
+		commerceInventoryWarehouseItem.setCommerceInventoryWarehouseId(
 			commerceInventoryWarehouseId);
-		commerceInventoryWarehouseItem2.setExternalReferenceCode(
+		commerceInventoryWarehouseItem.setExternalReferenceCode(
 			externalReferenceCode);
-		commerceInventoryWarehouseItem2.setSku(sku);
-		commerceInventoryWarehouseItem2.setQuantity(quantity);
+		commerceInventoryWarehouseItem.setSku(sku);
+		commerceInventoryWarehouseItem.setQuantity(quantity);
 
 		return commerceInventoryWarehouseItemPersistence.update(
-			commerceInventoryWarehouseItem2);
+			commerceInventoryWarehouseItem);
 	}
 
 	@Override
