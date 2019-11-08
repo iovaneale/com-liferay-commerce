@@ -1,0 +1,129 @@
+@component-name = "portal-commerce"
+definition {
+
+	property portal.acceptance = "true";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Commerce";
+
+	setUp {
+		TestCase.setUpPortalInstance();
+
+		User.firstLoginPG();
+
+		ProductMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		User.addCP(
+			userEmailAddress = "buyer@liferay.com",
+			userFirstName = "Buyer",
+			userLastName = "User",
+			userScreenName = "buyer");
+
+		ProductMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		User.editPasswordCP(
+			newPassword = "ttest",
+			userEmailAddress = "buyer@liferay.com",
+			userScreenName = "buyer");
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		if ("${testPortalInstance}" == "true") {
+			PortalInstances.tearDownCP();
+		}
+		else {
+			User.logoutAndLoginPG(
+				password = "test",
+				userLoginEmailAddress = "test@liferay.com");
+
+			CommerceConfiguration.commerceInitializersTearDown();
+
+			CommerceConfiguration.commerceFrontStoreTearDown();
+
+			CommerceConfiguration.commerceAdminTearDown(
+				accountName = "Commerce Account",
+				userFirstName = "buyer");
+
+		}
+	}
+
+	test MiniumSiteFullFlow {
+
+		CommerceAccelerators.initializeNewMinium(siteName = "Minium");
+
+		ProductMenu.gotoSiteViaLink(site = "Minium");
+
+		Navigator.openSpecificURL(url = "http://localhost:8080/group/Minium");
+
+		CommerceMiniumInitializer.createNewAccountViaFront(
+			accountName = "Commerce Account",
+			adminEmailAddress = "test@liferay.com");
+
+		CommerceMiniumInitializer.addExistingMemberWithRoleToAccount(
+			userEmailAddress = "buyer@liferay.com",
+			userFirstName = "Buyer");
+
+		ProductMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Accounts");
+
+		LexiconEntry.gotoEntryMenuItemNoError(
+			menuItem = "Edit",
+			rowEntry = "Commerce Account");
+
+		Click(locator1 = "NavBar#ADDRESSES");
+
+		Click(locator1 = "Button#PLUS");
+
+		CommerceEntry.createAccountAddressFromAdmin(
+			addressAddress = "Test Address",
+			addressCity = "Test City",
+			addressCountry = "United States",
+			addressName = "Commerce Address",
+			addressZipCode = "Test Zip Code");
+
+		User.logoutAndLoginPG(
+			password = "test",
+			userLoginEmailAddress = "buyer@liferay.com");
+
+		ProductMenu.gotoSite(site = "Minium");
+
+		Navigator.openSpecificURL(url = "http://localhost:8080/group/Minium");
+
+		FrontStore.addInitializerProductToCart(
+			productPrice = "50.00",
+			productQuantity = "2",
+			productSKU = "MIN93015");
+
+		CommerceMiniumInitializer.reviewOrder(
+			accountName = "Commerce Account",
+			menuItem = "Pending Orders",
+			orderAuthor = "Buyer User",
+			productPrice = "50.00",
+			productQuantity = "2",
+			productSKU = "MIN93015");
+
+		CommerceCheckout.checkout(
+			addressName = "Commerce Address",
+			deliveryType = "Standard Delivery",
+			site = "Minium");
+
+		CommerceMiniumInitializer.reviewOrder(
+			accountName = "Commerce Account",
+			menuItem = "Placed Orders",
+			orderAuthor = "Buyer User",
+			productPrice = "50.00",
+			productQuantity = "2",
+			productSKU = "MIN93015");
+	}
+
+}
