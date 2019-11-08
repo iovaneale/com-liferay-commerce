@@ -1,0 +1,239 @@
+<html>
+<head>
+<title>CommerceMinium</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">CommerceMinium</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ACCOUNT_ENTRY</td>
+	<td>//div[@class='row']//..//span[contains(.,'${key_accountName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ADD_ACCOUNT_BUTTON</td>
+	<td>//span[contains(.,'Add Account')]/..</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ADD_ADDRESS_BUTTON</td>
+	<td>//button[contains(.,'Add Address')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_ADDRESS</td>
+	<td>//div/label[contains(.,'Address')]//..//input | //div/label[contains(.,'Street')]//..//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ADD_ADDRESS_ARROW</td>
+	<td>//div[contains(@class,'__actions')]/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_CITY</td>
+	<td>//div/label[contains(.,'City')]//..//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_COUNTRY</td>
+	<td>//div/label[contains(.,'Country')]//..//select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_NAME</td>
+	<td>//div/label[contains(.,'Name')]//..//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_PLUS_BUTTON</td>
+	<td>//div/div//span/span[text()='${key_userEmailAddress}']//..//..//..//button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_REGION</td>
+	<td>//div/label[contains(.,'Region')]//..//select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_TELEPHONE_NUMBER</td>
+	<td>//div/label[contains(.,'Telephone')]//..//input | //div/label[contains(.,'Phone Number')]//..//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_TYPE</td>
+	<td>//div/label[contains(.,'Type')]//..//select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_ZIP_CODE</td>
+	<td>//div/label[contains(.,'Zip Code')]//..//input | //div/label[contains(.,'Postal Code')]//..//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_EDIT_BUTTON</td>
+	<td>//div[@class='account-management__action']//a[contains(.,'Edit')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_EDIT_USER_PASSWORD_AGAIN</td>
+	<td>//div/label[contains(.,'Again')]//..//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_EDIT_USER_PASSWORD_NEW</td>
+	<td>//div/label[contains(.,'New')]//..//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_HEADER_TAB</td>
+	<td>//div[@class='page-header']//..//li/a[contains(.,'${key_headerTab}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_INVITE_USER_BUTTON</td>
+	<td>//div/button[contains(@class,'commerce-button') and contains (.,'Invite')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_INVITE_USER_MODAL_INVITE_USER_BUTTON</td>
+	<td>//div[contains(@class,'commerce-modal')]//..//button[contains (.,'Invite')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_MAIN_BUTTON</td>
+	<td>//div/button[contains(@class,'commerce-button') and contains (.,'${key_button}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_MEMBERS_MEMBER</td>
+	<td>//tr/td/p/span/a[contains(.,'${key_userEmailAddress}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_MANAGEMENT_SAVE_BUTTON</td>
+	<td>//div/button[contains(@class,'commerce-button') and contains (.,'Save')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_SELECTOR_BACK_ARROW</td>
+	<td>//div[contains(@class,'minium-topbar')]//button[contains(.,'Back')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_SELECTOR_DROPDOWN</td>
+	<td>//button[@data-onclick='toggleAccountSelector']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_SELECTOR_SELECT_ACCOUNT</td>
+	<td>//span[contains(text(),'${key_accountName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCOUNT_SELECTOR_VIEW_ALL_ACCOUNTS</td>
+	<td>//div[@id='account-manager-curtain']/div/div[2]/div[3]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ACCOUNT_MODAL_NAME_OR_EMAIL_FIELD</td>
+	<td>//div/label[contains(.,'Name or Email')]//..//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_TO_CART_ARROW_BUTTON</td>
+	<td>//div/p[contains(.,'${key_productSKU}')]/..//div[contains(@class,'add-to-cart-button')]//div[contains(@class,'fwd')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_TO_CART_BUTTON</td>
+	<td>//div/p[contains(.,'${key_productSKU}')]/..//div//span[contains(.,'${key_productPrice}')]/../..//div[contains(@class,'add-to-cart-button')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECKOUT_BUTTON</td>
+	<td>//a[contains(.,'Checkout')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECKOUT_DELIVERY_RADIO</td>
+	<td>//label[contains(.,'${key_radioOption}')]/input[@type='radio' and contains(@name,'${key_fieldName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHECKOUT_SHIPPING_ADDRESS_SELECT</td>
+	<td>//div/label[contains(.,'Choose Shipping Address')]/../select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>COMMERCE_QUANTITY_SELECTOR_INPUT</td>
+	<td>//input[contains(@class,'commerce-quantity-selector__input')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MINI_CART_BUTTON</td>
+	<td>//div[contains(@class,'mini-cart-wrapper')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MODAL_CREATE_BUTTON</td>
+	<td>//button[contains(.,'Create')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REVIEW_ORDER_ENTRY</td>
+	<td>//td[contains(., '${key_accountName}')]/../td[contains(.,'${key_orderAuthor}')]/../td/p/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PENDING_ORDERS_ENTRY_ACCOUNT_NAME</td>
+	<td>//td[contains(., '${key_accountName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PENDING_ORDERS_INACTIVE_PRICE</td>
+	<td>//table/tbody//td[3]//span[contains(@class,'--inactive')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PENDING_ORDERS_PRICE</td>
+	<td>//table/tbody//td[3]//span[@class='price__value']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PENDING_ORDERS_PROMO_PRICE</td>
+	<td>//table/tbody//td[3]//span[contains(@class,'promo-price')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PENDING_ORDERS_QUANTITY</td>
+	<td>//table/tbody//td[5]//span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PENDING_ORDERS_SKU</td>
+	<td>//table/tbody//td[1]//span[contains(@class,'__value')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ROLES_MODAL_ROLE_CHECKBOX</td>
+	<td>//div/input[@type='checkbox' and @name='${key_role}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SIDEBAR_MENU_ITEM</td>
+	<td>//div[@class='minium-sidebar']//..//a[@class='main-link' and contains (.,'${key_menuItem}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPBAR_BACK_ARROW_BUTTON</td>
+	<td>//div[contains(@class,'minium-topbar')]//a[contains(.,'Back')]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

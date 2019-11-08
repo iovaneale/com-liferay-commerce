@@ -358,6 +358,11 @@
 	<td>//button[contains(@id,'setParentCommercePriceList')]</td>
 	<td></td>
 </tr>
+<tr>
+	<td>ADMIN_ACCOUNT_ELLIPSIS</td>
+	<td>//a/../../td/div/a</td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>
