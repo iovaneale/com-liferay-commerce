@@ -10,7 +10,7 @@ definition {
 
 		User.firstLoginPG();
 
-		CommerceConfiguration.commerceStoreFrontSetUp();
+		CommerceConfiguration.commerceFrontStoreSetUp();
 	}
 
 	tearDown {
@@ -20,7 +20,7 @@ definition {
 			PortalInstances.tearDownCP();
 		}
 		else {
-			CommerceConfiguration.commerceStoreFrontTearDown();
+			CommerceConfiguration.commerceFrontStoreTearDown();
 		}
 	}
 
