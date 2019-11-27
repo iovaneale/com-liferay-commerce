@@ -3,8 +3,6 @@ definition {
 	macro checkout {
 		ProductMenu.gotoSite(site = "${site}");
 
-		Navigator.openSpecificURL(url = "http://localhost:8080/group/Minium");
-
 		Click(locator1 = "CommerceMinium#MINI_CART_BUTTON");
 
 		Click(locator1 = "CommerceMinium#CHECKOUT_BUTTON");
