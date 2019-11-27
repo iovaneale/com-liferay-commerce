@@ -61,7 +61,9 @@ definition {
 
 		ProductMenu.gotoSiteViaLink(site = "Minium");
 
-		Navigator.openSpecificURL(url = "http://localhost:8080/group/Minium");
+		Navigator.openWithAppendToBaseURL(urlAppend = "group/Minium");
+
+		Pause(locator1 = "3000");
 
 		CommerceMiniumInitializer.createNewAccountViaFront(
 			accountName = "Commerce Account",
@@ -96,8 +98,6 @@ definition {
 			userLoginEmailAddress = "buyer@liferay.com");
 
 		ProductMenu.gotoSite(site = "Minium");
-
-		Navigator.openSpecificURL(url = "http://localhost:8080/group/Minium");
 
 		FrontStore.addInitializerProductToCart(
 			productPrice = "50.00",
