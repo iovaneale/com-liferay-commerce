@@ -50,7 +50,7 @@
 </tr>
 <tr>
 	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_PLUS_BUTTON</td>
-	<td>//div/div//span/span[text()='${key_userEmailAddress}']//..//..//..//button</td>
+	<td>//span[text()='${key_userEmailAddress}']//following::button[1]</td>
 	<td></td>
 </tr>
 <tr>
