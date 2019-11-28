@@ -1,0 +1,434 @@
+@component-name = "portal-commerce"
+definition {
+
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Commerce";
+
+	setUp {
+		TestCase.setUpPortalInstance();
+
+		User.firstLoginPG();
+
+		CommerceConfiguration.commerceFrontStoreSetUp();
+	}
+
+	tearDown {
+
+		CommerceConfiguration.commerceInitializersTearDown();
+
+		CommerceConfiguration.commerceAdminTearDown();
+
+		CommerceConfiguration.commerceFrontStoreTearDown();
+	}
+
+	test CommerceCatalogsSearchBar {
+		property portal.acceptance = "true";
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Catalogs");
+
+		for (var entryName : list "Minium,Speed") {
+
+			Click(locator1 = "Button#PLUS");
+
+			CommerceEntry.addNewCatalogsEntry(entryName = "${entryName}");
+
+			Click(locator1 = "Button#SAVE");
+		}
+
+		CommerceNavigator.searchEntry(entryName = "Minium");
+
+		AssertTextEquals(
+			locator1 = "Search#SEARCH_BAR_WIDGET",
+			value1 = "Minium");
+
+		echo("Checking search result...");
+
+		AssertTextEquals(
+			key_rowEntry = "Minium",
+			locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+			value1 = "Minium");
+
+		echo("Checking complete");
+
+		CommerceNavigator.searchEntry(entryName = "");
+
+		echo("Checking search result...");
+
+		for (var rowEntry : list "Minium,Speed") {
+			AssertTextEquals(
+				key_rowEntry = "${rowEntry}",
+				locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+				value1 = "${rowEntry}");
+
+		}
+
+		echo("Checking complete");
+	}
+
+	test CommerceChannelsSearchBar {
+		property portal.acceptance = "true";
+
+		for (var siteName : list "Guest 1,Guest 2") {
+
+			ProductMenu.gotoPortlet(
+				category = "Sites",
+				panel = "Control Panel",
+				portlet = "Sites");
+
+			Site.addBlankCP(siteName = "${siteName}");
+		}
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Channels");
+
+		for (var associateChannelToSite : list "Minium:Guest 1,Speed:Guest 2") {
+
+			var entryName = StringUtil.extractFirst("${associateChannelToSite}",":");
+			var siteName = StringUtil.extractLast("${associateChannelToSite}",":");
+
+			Click(locator1 = "Button#PLUS");
+
+			CommerceEntry.addNewChannelEntry(
+				criteriaType = "Site",
+				entryName = "${entryName}",
+				siteName = "${siteName}");
+
+			Click(locator1 = "Button#SAVE");
+		}
+
+		CommerceNavigator.searchEntry(entryName = "Minium");
+
+		AssertTextEquals(
+			locator1 = "Search#SEARCH_BAR_WIDGET",
+			value1 = "Minium");
+
+		echo("Checking search result...");
+
+		AssertTextEquals(
+			key_rowEntry = "Minium",
+			locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+			value1 = "Minium");
+
+		echo("Checking complete");
+
+		CommerceNavigator.searchEntry(entryName = "");
+
+		echo("Checking search result...");
+
+		for (var rowEntry : list "Minium,Speed") {
+			AssertTextEquals(
+				key_rowEntry = "${rowEntry}",
+				locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+				value1 = "${rowEntry}");
+
+		}
+
+		echo("Checking complete");
+	}
+
+	test CommerceDiscountsSearchBar {
+		property portal.acceptance = "true";
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Discounts");
+
+		for (var entryTitle : list "Minium,Speed") {
+
+			Click(locator1 = "Button#PLUS");
+
+			CommerceEntry.addNewDiscountsEntry(
+				accountGroup = "Guest",
+				channelsEntryName = "Liferay",
+				discountLevel = "15",
+				discountTarget = "Apply to Product",
+				entryTitle = "${entryTitle}",
+				maximumDiscountAmount = "10");
+
+			Click(locator1 = "Button#SAVE");
+
+			ProductMenu.gotoPortlet(
+				category = "Commerce",
+				panel = "Control Panel",
+				portlet = "Discounts");
+
+		}
+
+		CommerceNavigator.searchEntry(entryName = "Minium");
+
+		AssertTextEquals(
+			locator1 = "Search#SEARCH_BAR_WIDGET",
+			value1 = "Minium");
+
+		echo("Checking search result...");
+
+		AssertTextEquals(
+			key_rowEntry = "Minium",
+			locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+			value1 = "Minium");
+
+		echo("Checking complete");
+
+		CommerceNavigator.searchEntry(entryName = "");
+
+		echo("Checking search result...");
+
+		for (var rowEntry : list "Minium,Speed") {
+			AssertTextEquals(
+				key_rowEntry = "${rowEntry}",
+				locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+				value1 = "${rowEntry}");
+
+		}
+	}
+
+	test CommercePriceListsSearchBar {
+		property portal.acceptance = "true";
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Price Lists");
+
+		for (var entryName : list "Minium,Speed") {
+
+			Click(locator1 = "Button#PLUS");
+
+			CommerceEntry.addNewPriceListsEntry(
+				accountGroupsEntryName = "Guest",
+				currencyCode = "USD",
+				entryName = "${entryName}");
+
+			Button.clickPublish();
+
+			ProductMenu.gotoPortlet(
+				category = "Commerce",
+				panel = "Control Panel",
+				portlet = "Price Lists");
+
+		}
+
+		CommerceNavigator.searchEntry(entryName = "Minium");
+
+		AssertTextEquals(
+			locator1 = "Search#SEARCH_BAR_WIDGET",
+			value1 = "Minium");
+
+		echo("Checking search result...");
+
+		AssertTextEquals(
+			key_rowEntry = "Minium",
+			locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+			value1 = "Minium");
+
+		echo("Checking complete");
+
+		CommerceNavigator.searchEntry(entryName = "");
+
+		echo("Checking search result...");
+
+		for (var rowEntry : list "Minium,Speed") {
+			AssertTextEquals(
+				key_rowEntry = "${rowEntry}",
+				locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+				value1 = "${rowEntry}");
+
+		}
+	}
+
+	test CommerceProductsSearchBar {
+		property portal.acceptance = "true";
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Products");
+
+		for (var productName : list "Minium,Speed") {
+
+			CPCommerceCatalog.newProductsEntry(
+				productName = "${productName}",
+				productType = "Simple");
+
+		}
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Products");
+
+		CommerceNavigator.searchEntry(entryName = "Minium");
+
+		AssertTextEquals(
+			locator1 = "Search#SEARCH_BAR_WIDGET",
+			value1 = "Minium");
+
+		echo("Checking search result...");
+
+		AssertTextEquals(
+			key_rowEntry = "Minium",
+			locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+			value1 = "Minium");
+
+		echo("Checking complete");
+
+		CommerceNavigator.searchEntry(entryName = "");
+
+		echo("Checking search result...");
+
+		for (var rowEntry : list "Minium,Speed") {
+			AssertTextEquals(
+				key_rowEntry = "${rowEntry}",
+				locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+				value1 = "${rowEntry}");
+
+		}
+
+		echo("Checking complete");
+	}
+
+	test CommerceProductsSpecificationsSearchBar {
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Products");
+
+		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Specifications");
+
+		for (var entryTitle : list "Minium,Speed") {
+
+			Click(locator1 = "Button#PLUS");
+
+			Type(
+				locator1 = "CommerceEntry#SPECIFICATION_LABEL",
+				value1 = "${entryTitle}");
+
+			Click(locator1 = "Button#SAVE");
+
+		}
+
+		CommerceNavigator.searchEntry(entryName = "Minium");
+
+		AssertTextEquals(
+			locator1 = "Search#SEARCH_BAR_WIDGET",
+			value1 = "Minium");
+
+		echo("Checking search result...");
+
+		AssertTextEquals(
+			key_rowEntry = "Minium",
+			locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+			value1 = "Minium");
+
+		echo("Checking complete");
+
+		CommerceNavigator.searchEntry(entryName = "");
+
+		echo("Checking search result...");
+
+		for (var rowEntry : list "Minium,Speed") {
+			AssertTextEquals(
+				key_rowEntry = "${rowEntry}",
+				locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+				value1 = "${rowEntry}");
+
+		}
+	}
+
+	test CommerceSettingCountriesSearchBar {
+		property portal.acceptance = "true";
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Settings");
+
+		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Countries");
+
+		CommerceNavigator.searchEntry(entryName = "Canada");
+
+		AssertTextEquals(
+			locator1 = "Search#SEARCH_BAR_WIDGET",
+			value1 = "Canada");
+
+		echo("Checking search result...");
+
+		AssertTextEquals(
+			key_rowEntry = "Canada",
+			locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+			value1 = "Canada");
+
+		echo("Checking complete");
+
+		CommerceNavigator.searchEntry(entryName = "");
+
+		echo("Checking search result...");
+
+		for (var rowEntry : list "Canada,China") {
+			AssertTextEquals(
+				key_rowEntry = "${rowEntry}",
+				locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+				value1 = "${rowEntry}");
+
+		}
+
+		echo("Checking complete");
+	}
+
+	test CommerceSettingWarehousesSearchBar {
+		property portal.acceptance = "true";
+
+		ProductMenu.gotoPortlet(
+			category = "Commerce",
+			panel = "Control Panel",
+			portlet = "Settings");
+
+		CommerceNavigator.gotoCommercePortletNavItem(navItem = "Warehouses");
+
+		for (var entryName : list "Minium,Speed") {
+
+			CommerceEntry.addWarehouses(entryName = "${entryName}");
+
+			Click(locator1 = "Button#SAVE");
+
+			CommerceNavigator.gotoCommercePortletNavItem(navItem = "Warehouses");
+
+		}
+
+		CommerceNavigator.searchEntry(entryName = "Minium");
+
+		AssertTextEquals(
+			locator1 = "Search#SEARCH_BAR_WIDGET",
+			value1 = "Minium");
+
+		echo("Checking search result...");
+
+		AssertTextEquals(
+			key_rowEntry = "Minium",
+			locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+			value1 = "Minium");
+
+		echo("Checking complete");
+
+		CommerceNavigator.searchEntry(entryName = "");
+
+		echo("Checking search result...");
+
+		for (var rowEntry : list "Minium,Speed") {
+			AssertTextEquals(
+				key_rowEntry = "${rowEntry}",
+				locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
+				value1 = "${rowEntry}");
+
+		}
+	}
+
+}
