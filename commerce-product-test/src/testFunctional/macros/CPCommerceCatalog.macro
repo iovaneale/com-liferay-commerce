@@ -50,8 +50,7 @@ definition {
 			optionFieldType = "${optionFieldType}",
 			optionName = "${optionName}");
 
-		//Button.clickSave();
-		Click(locator1 = "CommerceEntry#SAVE_2")
+		Click(locator1 = "CommerceEntry#SAVE_2");
 
 		AssertElementPresent(locator1 = "Message#SUCCESS");
 
