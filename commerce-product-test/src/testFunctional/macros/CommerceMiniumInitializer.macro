@@ -136,18 +136,18 @@ definition {
 		Click(
 			key_accountName = "${accountName}",
 			key_orderAuthor = "${orderAuthor}",
-			locator1 = "CommerceMinium#REVIEW_ORDER_ENTRY");
+			locator1 = "CommerceMinium#PENDING_ORDERS_ENTRY");
 
 		AssertTextEquals(
-			locator1 = "CommerceMinium#PENDING_ORDERS_SKU",
+			locator1 = "CommerceMinium#PENDING_ORDER_DETAILS_SKU",
 			value1 = "${productSKU}");
 
 		AssertTextEquals(
-			locator1 = "CommerceMinium#PENDING_ORDERS_PRICE",
+			locator1 = "CommerceMinium#PENDING_ORDER_DETAILS_PRICE",
 			value1 = "$${productPrice}");
 
 		AssertTextEquals(
-			locator1 = "CommerceMinium#PENDING_ORDERS_QUANTITY",
+			locator1 = "CommerceMinium#PENDING_ORDER_DETAILS_QUANTITY",
 			value1 = "${productQuantity}");
 	}
 
