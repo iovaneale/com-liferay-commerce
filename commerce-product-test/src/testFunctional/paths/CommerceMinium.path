@@ -10,7 +10,7 @@
 <tbody>
 <tr>
 	<td>ACCOUNT_MANAGEMENT_ACCOUNT_ENTRY</td>
-	<td>//div[@class='row']//..//span[contains(.,'${key_accountName}')]</td>
+	<td>//div[@class='row']//span[contains(.,'${key_accountName}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -30,7 +30,7 @@
 </tr>
 <tr>
 	<td>ACCOUNT_MANAGEMENT_ADD_ADDRESS_ARROW</td>
-	<td>//div[contains(@class,'__actions')]/button</td>
+	<td>//div[contains(@class,'actions')]/button</td>
 	<td></td>
 </tr>
 <tr>
@@ -135,7 +135,7 @@
 </tr>
 <tr>
 	<td>ACCOUNT_SELECTOR_VIEW_ALL_ACCOUNTS</td>
-	<td>//div[@id='account-manager-curtain']/div/div[2]/div[3]/a</td>
+	<td>//div[@id='account-manager-curtain']//a[contains(.,'View All Accounts')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -210,7 +210,7 @@
 </tr>
 <tr>
 	<td>SIDEBAR_MENU_ITEM</td>
-	<td>//div[@class='minium-sidebar']//..//a[@class='main-link' and contains (.,'${key_menuItem}')]</td>
+	<td>//div[@class='minium-sidebar']//..//a[contains (.,'${key_menuItem}')]</td>
 	<td></td>
 </tr>
 <tr>
