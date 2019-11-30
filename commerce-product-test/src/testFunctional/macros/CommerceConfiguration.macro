@@ -57,7 +57,7 @@ definition {
 			portlet = "Accounts");
 
 		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
-			Click(locator1 = "CommerceEntry#ADMIN_ACCOUNT_ELLIPSIS");
+			Click(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS");
 
 			MenuItem.clickNoError(menuItem = "Delete");
 
