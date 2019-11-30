@@ -184,8 +184,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>REVIEW_ORDER_ENTRY</td>
-	<td>//td[contains(., '${key_accountName}')]/../td[contains(.,'${key_orderAuthor}')]/../td/p/span</td>
+	<td>PENDING_ORDERS_ENTRY</td>
+	<td>//td[contains(.,'${key_orderAuthor}')]/../td/p/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -194,28 +194,18 @@
 	<td></td>
 </tr>
 <tr>
-	<td>PENDING_ORDERS_INACTIVE_PRICE</td>
-	<td>//table/tbody//td[3]//span[contains(@class,'--inactive')]</td>
+	<td>PENDING_ORDER_DETAILS_PRICE</td>
+	<td>//tbody//span[@class='price__value']</td>
 	<td></td>
 </tr>
 <tr>
-	<td>PENDING_ORDERS_PRICE</td>
-	<td>//table/tbody//td[3]//span[@class='price__value']</td>
+	<td>PENDING_ORDER_DETAILS_QUANTITY</td>
+	<td>//tbody//td[5]//span</td>
 	<td></td>
 </tr>
 <tr>
-	<td>PENDING_ORDERS_PROMO_PRICE</td>
-	<td>//table/tbody//td[3]//span[contains(@class,'promo-price')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>PENDING_ORDERS_QUANTITY</td>
-	<td>//table/tbody//td[5]//span</td>
-	<td></td>
-</tr>
-<tr>
-	<td>PENDING_ORDERS_SKU</td>
-	<td>//table/tbody//td[1]//span[contains(@class,'__value')]</td>
+	<td>PENDING_ORDER_DETAILS_SKU</td>
+	<td>//tbody//span[contains(@class,'cell__value')]</td>
 	<td></td>
 </tr>
 <tr>
