@@ -109,7 +109,7 @@ definition {
 		FrontStore.addProductToCart(
 			productPrice = "50.00",
 			productQuantity = "2",
-			productSKU = "MIN93015");
+			productName = "ABS Sensor");
 
 		CommerceMiniumInitializer.reviewOrder(
 			accountName = "Commerce Account",
@@ -121,7 +121,7 @@ definition {
 
 		CommerceCheckout.checkout(
 			addressName = "Commerce Address",
-			deliveryType = "Standard Delivery",
+			deliveryType = "Standard",
 			site = "Minium");
 
 		CommerceMiniumInitializer.reviewOrder(
