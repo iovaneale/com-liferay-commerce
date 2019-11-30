@@ -2,16 +2,16 @@ definition {
 
 	macro addProductToCart {
 		Click(
-			key_productPrice = "${productPrice}",
-			key_productSKU = "${productSKU}",
+			key_productName = "${productName}",
 			locator1 = "CommerceMinium#ADD_TO_CART_BUTTON");
 
 		Type(
+			key_productName = "${productName}",
 			locator1 = "CommerceMinium#COMMERCE_QUANTITY_SELECTOR_INPUT",
 			value1 = "${productQuantity}");
 
 		Click(
-			key_productSKU = "${productSKU}",
+			key_productName = "${productName}",
 			locator1 = "CommerceMinium#ADD_TO_CART_ARROW_BUTTON");
 	}
 
