@@ -106,7 +106,7 @@ definition {
 
 		ProductMenu.gotoSite(site = "Minium");
 
-		FrontStore.addInitializerProductToCart(
+		FrontStore.addProductToCart(
 			productPrice = "50.00",
 			productQuantity = "2",
 			productSKU = "MIN93015");

@@ -1,6 +1,6 @@
 definition {
 
-	macro addInitializerProductToCart {
+	macro addProductToCart {
 		Click(
 			key_productPrice = "${productPrice}",
 			key_productSKU = "${productSKU}",
