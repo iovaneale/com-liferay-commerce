@@ -159,18 +159,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>CHECKOUT_DELIVERY_RADIO</td>
-	<td>//label[contains(.,'${key_radioOption}')]/input[@type='radio' and contains(@name,'${key_fieldName}')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>CHECKOUT_SHIPPING_ADDRESS_SELECT</td>
-	<td>//div/label[contains(.,'Choose Shipping Address')]/../select</td>
+	<td>CHECKOUT_SHIPPING_OPTION_RADIO</td>
+	<td>//label[contains(.,'${key_radioOption}')]/input[@type='radio']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>COMMERCE_QUANTITY_SELECTOR_INPUT</td>
-	<td>//input[contains(@class,'commerce-quantity-selector__input')]</td>
+	<td>//a[contains(.,'${key_productName}')]//..//div[(@class='commerce-quantity-selector')]//input</td>
 	<td></td>
 </tr>
 <tr>

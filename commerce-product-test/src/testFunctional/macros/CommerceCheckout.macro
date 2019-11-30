@@ -10,15 +10,15 @@ definition {
 		Pause(locator1 = "3000");
 
 		Select(
-			locator1 = "CommerceMinium#CHECKOUT_SHIPPING_ADDRESS_SELECT",
+			key_fieldLabel = "Choose Shipping Address",
+			locator1 = "Select#GENERIC_SELECT_FIELD",
 			value1 = "${addressName}");
 
 		Click(locator1 = "Button#CONTINUE");
 
 		Click(
-			key_fieldName = "ShippingOptionKey",
-			key_radioOption = "${deliveryType}",
-			locator1 = "CommerceMinium#CHECKOUT_DELIVERY_RADIO");
+			key_radioOption = "${deliveryType} Delivery",
+			locator1 = "CommerceMinium#CHECKOUT_SHIPPING_OPTION_RADIO");
 
 		Click(locator1 = "Button#CONTINUE");
 
