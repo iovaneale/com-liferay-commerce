@@ -160,7 +160,7 @@
 </tr>
 <tr>
 	<td>PENDING_ORDER_DETAILS_NAME</td>
-	<td>//tbody//td[@class=' lfr-description-column']/a</td>
+	<td>//tbody//td[@class=' lfr-description-column']/a | //tbody//td[2]//span</td>
 	<td></td>
 </tr>
 <tr>
@@ -184,8 +184,23 @@
 	<td></td>
 </tr>
 <tr>
-	<td>SIDEBAR_MENU_ITEM</td>
+	<td>MINIUM_SIDEBAR_MENU_ITEM</td>
 	<td>//div[@class='minium-sidebar']//..//a[contains (.,'${key_menuItem}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SPEEDWELL_ACCOUNT_DASHBOARD_ITEM</td>
+	<td>//div[contains(@class,'account-dashboard')]//h3[contains(.,'${key_dashboardItem}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SPEEDWELL_TOPBAR_BUTTON</td>
+	<td>//div[contains(@class,'speedwell-main-menu')]/../button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SPEEDWELL_TOPBAR_MENU_ITEM</td>
+	<td>//div[contains(@class,'speedwell-main-menu__links')]//a/div[contains(.,'${key_menuItem}')]</td>
 	<td></td>
 </tr>
 <tr>
