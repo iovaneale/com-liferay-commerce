@@ -44,25 +44,25 @@ definition {
 		Click(locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_ADDRESS_BUTTON");
 
 		Type(
-			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_ADDRESS",
+			locator1 = "TextInput#STREET_1",
 			value1 = "${addressAddress}");
 
 		Type(
-			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_CITY",
+			locator1 = "TextInput#CITY",
 			value1 = "${addressCity}");
 
 		Select(
-			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_COUNTRY",
+			locator1 = "Select#COUNTRY",
 			value1 = "${addressCountry}");
 
 		Type(
-			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_ZIP_CODE",
+			locator1 = "TextInput#POSTAL_CODE",
 			value1 = "${addressZipCode}");
 
 		Click(locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_ADDRESS_ARROW");
 
 		Type(
-			locator1 = "CommerceMinium#ACCOUNT_MANAGEMENT_ADD_MODAL_NAME",
+			locator1 = "TextInput#NAME",
 			value1 = "${addressName}");
 
 		Click(locator1 = "CommerceMinium#MODAL_CREATE_BUTTON");
