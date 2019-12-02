@@ -119,7 +119,7 @@ definition {
 			productQuantity = "2",
 			productSKU = "MIN93015");
 
-		CommerceCheckout.checkout(
+		CommerceCheckout.initializersCheckout(
 			addressName = "Commerce Address",
 			deliveryType = "Standard",
 			site = "Minium");
