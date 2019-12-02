@@ -38,6 +38,8 @@ definition {
 				accountName = "Commerce Account",
 				userFirstName = "buyer");
 
+			User.logoutPG();
+
 		}
 	}
 
