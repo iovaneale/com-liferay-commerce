@@ -65,7 +65,7 @@ definition {
 			userEmailAddress = "buyer@liferay.com",
 			userScreenName = "buyer");
 
-		CommerceAccelerators.initializeNewMinium(siteName = "Minium");
+		CommerceAccelerators.initializeAccelerator(siteName = "Minium");
 
 		ProductMenu.gotoSiteViaLink(site = "Minium");
 

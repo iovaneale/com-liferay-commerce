@@ -1,6 +1,6 @@
 definition {
 
-	macro initializeNewMinium {
+	macro initializeAccelerator {
 		CommerceAccelerators.initializeNewSiteViaAccelerator(siteName = "${siteName}");
 	}
 
