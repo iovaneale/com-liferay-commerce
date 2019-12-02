@@ -24,43 +24,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_ADDRESS</td>
-	<td>//div/label[contains(.,'Address')]//..//input | //div/label[contains(.,'Street')]//..//input</td>
-	<td></td>
-</tr>
-<tr>
 	<td>ACCOUNT_MANAGEMENT_ADD_ADDRESS_ARROW</td>
 	<td>//div[contains(@class,'actions')]/button</td>
 	<td></td>
 </tr>
 <tr>
-	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_CITY</td>
-	<td>//div/label[contains(.,'City')]//..//input</td>
-	<td></td>
-</tr>
-<tr>
-	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_COUNTRY</td>
-	<td>//div/label[contains(.,'Country')]//..//select</td>
-	<td></td>
-</tr>
-<tr>
-	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_NAME</td>
-	<td>//div/label[contains(.,'Name')]//..//input</td>
-	<td></td>
-</tr>
-<tr>
 	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_PLUS_BUTTON</td>
 	<td>//span[text()='${key_userEmailAddress}']//following::button[1]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_REGION</td>
-	<td>//div/label[contains(.,'Region')]//..//select</td>
-	<td></td>
-</tr>
-<tr>
-	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_TELEPHONE_NUMBER</td>
-	<td>//div/label[contains(.,'Telephone')]//..//input | //div/label[contains(.,'Phone Number')]//..//input</td>
 	<td></td>
 </tr>
 <tr>
@@ -70,7 +40,7 @@
 </tr>
 <tr>
 	<td>ACCOUNT_MANAGEMENT_ADD_MODAL_ZIP_CODE</td>
-	<td>//div/label[contains(.,'Zip Code')]//..//input | //div/label[contains(.,'Postal Code')]//..//input</td>
+	<td>//div/label[contains(.,'Zip Code')]//..//input</td>
 	<td></td>
 </tr>
 <tr>
