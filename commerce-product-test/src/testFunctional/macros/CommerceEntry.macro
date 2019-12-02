@@ -442,11 +442,11 @@ definition {
 	}
 
 	macro selectAccountFromAccountSelector {
-		Click(locator1 = "CommerceMinium#ACCOUNT_SELECTOR_DROPDOWN");
+		Click(locator1 = "CommerceAccelerators#ACCOUNT_SELECTOR_DROPDOWN");
 
 		Click(
 			key_accountName = "${accountName}",
-			locator1 = "CommerceMinium#ACCOUNT_SELECTOR_SELECT_ACCOUNT");
+			locator1 = "CommerceAccelerators#ACCOUNT_SELECTOR_SELECT_ACCOUNT");
 	}
 
 	macro selectAssociatedOptionsValue {

@@ -3,16 +3,16 @@ definition {
 	macro addProductToCart {
 		Click(
 			key_productName = "${productName}",
-			locator1 = "CommerceMinium#ADD_TO_CART_BUTTON");
+			locator1 = "CommerceAccelerators#ADD_TO_CART_BUTTON");
 
 		Type(
 			key_productName = "${productName}",
-			locator1 = "CommerceMinium#COMMERCE_QUANTITY_SELECTOR_INPUT",
+			locator1 = "CommerceAccelerators#COMMERCE_QUANTITY_SELECTOR_INPUT",
 			value1 = "${productQuantity}");
 
 		Click(
 			key_productName = "${productName}",
-			locator1 = "CommerceMinium#ADD_TO_CART_ARROW_BUTTON");
+			locator1 = "CommerceAccelerators#ADD_TO_CART_ARROW_BUTTON");
 	}
 
 	macro selectAssociatedFSOptionsValue {
