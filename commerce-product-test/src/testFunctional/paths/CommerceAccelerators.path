@@ -159,6 +159,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>PENDING_ORDER_DETAILS_NAME</td>
+	<td>//tbody//td[@class=' lfr-description-column']/a</td>
+	<td></td>
+</tr>
+<tr>
 	<td>PENDING_ORDER_DETAILS_PRICE</td>
 	<td>//tbody//span[@class='price__value']</td>
 	<td></td>
