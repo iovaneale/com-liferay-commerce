@@ -107,9 +107,9 @@ definition {
 		ProductMenu.gotoSite(site = "Minium");
 
 		FrontStore.addProductToCart(
+			productName = "ABS Sensor",
 			productPrice = "50.00",
-			productQuantity = "2",
-			productName = "ABS Sensor");
+			productQuantity = "2");
 
 		CommerceMiniumInitializer.reviewOrder(
 			accountName = "Commerce Account",
