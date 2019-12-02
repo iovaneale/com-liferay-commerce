@@ -73,11 +73,11 @@ definition {
 
 		Pause(locator1 = "3000");
 
-		CommerceMiniumInitializer.createNewAccountViaFront(
+		CommerceAcceleratorsInitializer.createNewAccountViaFront(
 			accountName = "Commerce Account",
 			adminEmailAddress = "test@liferay.com");
 
-		CommerceMiniumInitializer.addExistingMemberWithRoleToAccount(
+		CommerceAcceleratorsInitializer.addExistingMemberWithRoleToAccount(
 			userEmailAddress = "buyer@liferay.com",
 			userFirstName = "Buyer");
 
@@ -112,7 +112,7 @@ definition {
 			productPrice = "50.00",
 			productQuantity = "2");
 
-		CommerceMiniumInitializer.reviewOrder(
+		CommerceAcceleratorsInitializer.reviewOrder(
 			accountName = "Commerce Account",
 			menuItem = "Pending Orders",
 			orderAuthor = "Buyer User",
@@ -125,7 +125,7 @@ definition {
 			deliveryType = "Standard",
 			site = "Minium");
 
-		CommerceMiniumInitializer.reviewOrder(
+		CommerceAcceleratorsInitializer.reviewOrder(
 			accountName = "Commerce Account",
 			menuItem = "Placed Orders",
 			orderAuthor = "Buyer User",
