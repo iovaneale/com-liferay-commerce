@@ -114,10 +114,12 @@ definition {
 			productPrice = "50.00",
 			productQuantity = "2");
 
+		CommerceNavigator.gotoMiniumSidebarItem(menuItem = "Pending Orders");
+
 		CommerceAcceleratorsInitializer.reviewOrder(
 			accountName = "Commerce Account",
-			menuItem = "Pending Orders",
 			orderAuthor = "Buyer User",
+			productName = "ABS Sensor",
 			productPrice = "50.00",
 			productQuantity = "2",
 			productSKU = "MIN93015");
@@ -127,10 +129,12 @@ definition {
 			deliveryType = "Standard",
 			site = "Minium");
 
+		CommerceNavigator.gotoMiniumSidebarItem(menuItem = "Placed Orders");
+
 		CommerceAcceleratorsInitializer.reviewOrder(
 			accountName = "Commerce Account",
-			menuItem = "Placed Orders",
 			orderAuthor = "Buyer User",
+			productName = "ABS Sensor",
 			productPrice = "50.00",
 			productQuantity = "2",
 			productSKU = "MIN93015");

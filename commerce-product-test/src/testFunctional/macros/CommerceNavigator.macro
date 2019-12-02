@@ -41,4 +41,22 @@ definition {
 		Click(locator1 = "CommerceNavigation#SEARCH");
 	}
 
+	macro gotoMiniumSidebarItem {
+		Click(
+			key_menuItem = "${menuItem}",
+			locator1 = "CommerceAccelerators#MINIUM_SIDEBAR_MENU_ITEM");
+	}
+
+	macro gotoSpeedwellTopbarItem {
+		Click(
+			key_menuItem = "${menuItem}",
+			locator1 = "CommerceAccelerators#SPEEDWELL_TOPBAR_MENU_ITEM");
+	}
+
+	macro gotoSpeedwellDashboardItem {
+		Click(
+			key_dashboardItem = "${dashboardItem}",
+			locator1 = "CommerceAccelerators#SPEEDWELL_ACCOUNT_DASHBOARD_ITEM");
+	}
+
 }

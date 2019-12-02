@@ -125,9 +125,6 @@ definition {
 	}
 
 	macro reviewOrder {
-		Click(
-			key_menuItem = "${menuItem}",
-			locator1 = "CommerceAccelerators#SIDEBAR_MENU_ITEM");
 
 		Click(
 			key_accountName = "${accountName}",
