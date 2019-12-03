@@ -339,11 +339,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>ACCORDION</td>
-	<td>//fieldset//div/a[contains(@aria-expanded,'true')]</td>
-	<td></td>
-</tr>
-<tr>
 	<td>ROLE_SELECT_BUTTON</td>
 	<td>//div/h3[contains(.,'${key_roleType}')]//..//button</td>
 	<td></td>
@@ -351,6 +346,11 @@
 <tr>
 	<td>ACCORDION_TITLE</td>
 	<td>//fieldset//div/a[contains(.,'${key_accordionTitle}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACCORDION_CLOSED</td>
+	<td>//fieldset//div/a[contains(@aria-expanded,'false') and contains(.,'${key_accordionTitle}')]</td>
 	<td></td>
 </tr>
 <tr>
