@@ -305,7 +305,7 @@ definition {
 
 		Check.checkToggleSwitch(locator1 = "CommerceEntry#ACTIVE_CHECKBOX");
 
-		if (IsElementNotPresent(locator1 = "CommerceEntry#ACCORDION")) {
+		if (IsElementPresent(locator1 = "CommerceEntry#ACCORDION_CLOSED", key_accordionTitle = "Channels")) {
 			Click(
 				key_accordionTitle = "Channels",
 				locator1 = "CommerceEntry#ACCORDION_TITLE");
@@ -315,11 +315,7 @@ definition {
 			key_channel = "Liferay",
 			locator1 = "CommerceEntry#WAREHOUSES_SELECT_CHANNEL");
 
-		Click(
-			key_accordionTitle = "Channels",
-			locator1 = "CommerceEntry#ACCORDION_TITLE");
-
-		if (IsElementNotPresent(locator1 = "CommerceEntry#ACCORDION")) {
+		if (IsElementPresent(locator1 = "CommerceEntry#ACCORDION_CLOSED", key_accordionTitle = "Geolocation")) {
 			Click(
 				key_accordionTitle = "Geolocation",
 				locator1 = "CommerceEntry#ACCORDION_TITLE");
@@ -334,10 +330,6 @@ definition {
 			key_coordinate = "Latitude",
 			locator1 = "CommerceEntry#WAREHOUSES_LATITUDE_LONGITUDE",
 			value1 = "1");
-
-		Click(
-			key_accordionTitle = "Geolocation",
-			locator1 = "CommerceEntry#ACCORDION_TITLE");
 
 		Click(locator1 = "CommerceEntry#SAVE_BUTTON");
 	}
