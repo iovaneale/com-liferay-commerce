@@ -333,6 +333,7 @@ definition {
 			locator1 = "CommerceEntry#ACCORDION_TITLE");
 
 	}
+
 	macro createNewAccountGroup {
 		ProductMenu.gotoPortlet(
 			category = "Users",
