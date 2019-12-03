@@ -332,7 +332,6 @@ definition {
 			key_accordionTitle = "Geolocation",
 			locator1 = "CommerceEntry#ACCORDION_TITLE");
 
-		//Click(locator1 = "CommerceEntry#SAVE_BUTTON");
 
 	}
 	macro createNewAccountGroup {
