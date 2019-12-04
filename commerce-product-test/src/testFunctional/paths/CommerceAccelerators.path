@@ -120,7 +120,7 @@
 </tr>
 <tr>
 	<td>ADD_TO_CART_BUTTON</td>
-	<td>//a[contains(.,'${key_productName}')]//..//div[contains(@class,'add-to-cart-button')]</td>
+	<td>//a[contains(.,'${key_productName}')]//..//button[contains(@class,'add-to-cart')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -135,7 +135,7 @@
 </tr>
 <tr>
 	<td>COMMERCE_QUANTITY_SELECTOR_INPUT</td>
-	<td>//a[contains(.,'${key_productName}')]//..//div[(@class='commerce-quantity-selector')]//input</td>
+	<td>//a[contains(.,'${key_productName}')]//..//form[(@class='quantity-selector')]//input</td>
 	<td></td>
 </tr>
 <tr>
@@ -150,7 +150,7 @@
 </tr>
 <tr>
 	<td>PENDING_ORDERS_ENTRY</td>
-	<td>//td[contains(.,'${key_orderAuthor}')]/../td/p/span</td>
+	<td>//td[contains(.,'${key_accountName}')]/../td/p/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -165,7 +165,12 @@
 </tr>
 <tr>
 	<td>PENDING_ORDER_DETAILS_PRICE</td>
-	<td>//tbody//span[@class='price__value']</td>
+	<td>//tbody//td[@class=' lfr-price-column'] | //tbody//td[6]/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PENDING_ORDER_DETAILS_UNIT_PRICE</td>
+	<td>//tbody//td[@class=' lfr-unit-price-column'] | //tbody//span[@class='price__value' or @class='price-value']</td>
 	<td></td>
 </tr>
 <tr>
