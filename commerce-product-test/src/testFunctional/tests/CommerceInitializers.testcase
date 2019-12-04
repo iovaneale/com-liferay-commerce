@@ -111,18 +111,18 @@ definition {
 
 		FrontStore.addProductToCart(
 			productName = "ABS Sensor",
-			productPrice = "50.00",
-			productQuantity = "2");
+			productQuantity = "2",
+			productUnitPrice = "50.00");
 
 		CommerceNavigator.gotoMiniumSidebarItem(menuItem = "Pending Orders");
 
 		CommerceAcceleratorsInitializer.reviewOrder(
 			accountName = "Commerce Account",
-			orderAuthor = "Buyer User",
 			productName = "ABS Sensor",
-			productPrice = "50.00",
+			productPrice = "100.00",
 			productQuantity = "2",
-			productSKU = "MIN93015");
+			productSKU = "MIN93015",
+			productUnitPrice = "50.00");
 
 		CommerceCheckout.initializersCheckout(
 			addressName = "Commerce Address",
@@ -133,11 +133,81 @@ definition {
 
 		CommerceAcceleratorsInitializer.reviewOrder(
 			accountName = "Commerce Account",
-			orderAuthor = "Buyer User",
 			productName = "ABS Sensor",
-			productPrice = "50.00",
+			productPrice = "100.00",
 			productQuantity = "2",
-			productSKU = "MIN93015");
+			productSKU = "MIN93015",
+			productUnitPrice = "50.00");
+	}
+
+	test SpeedwellSiteFullFlow {
+		property portal.acceptance = "true";
+
+		CommerceAccelerators.initializeAccelerator(siteName = "Speedwell");
+
+		ProductMenu.gotoSiteViaLink(site = "Speedwell");
+
+		ProductMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Accounts");
+
+		LexiconEntry.gotoEntryMenuItemNoError(
+			menuItem = "Edit",
+			rowEntry = "Test Test");
+
+		Click(locator1 = "NavBar#ADDRESSES");
+
+		Click(locator1 = "Button#PLUS");
+
+		CommerceEntry.createAccountAddressFromAdmin(
+			addressAddress = "Test Address",
+			addressCity = "Test City",
+			addressCountry = "United States",
+			addressName = "Commerce Address",
+			addressZipCode = "Test Zip Code");
+
+		ProductMenu.gotoSite(site = "Speedwell");
+
+		Click(locator1 = "CommerceAccelerators#SPEEDWELL_TOPBAR_BUTTON");
+
+		CommerceNavigator.gotoSpeedwellTopbarItem(menuItem = "Catalog");
+
+		FrontStore.addProductToCart(
+			productName = "ABS Sensor",
+			productQuantity = "2",
+			productUnitPrice = "50.00");
+
+		Click(locator1 = "CommerceAccelerators#SPEEDWELL_TOPBAR_BUTTON");
+
+		CommerceNavigator.gotoSpeedwellTopbarItem(menuItem = "My Cart");
+
+		CommerceAcceleratorsInitializer.reviewOrder(
+			accountName = "Test Test",
+			productName = "ABS Sensor",
+			productPrice = "100.00",
+			productQuantity = "2",
+			productSKU = "SPEED93015",
+			productUnitPrice = "50.00");
+
+		CommerceCheckout.initializersCheckout(
+			addressName = "Commerce Address",
+			deliveryType = "Standard",
+			site = "Speedwell");
+
+		Click(locator1 = "CommerceAccelerators#SPEEDWELL_TOPBAR_BUTTON");
+
+		CommerceNavigator.gotoSpeedwellTopbarItem(menuItem = "My Account");
+
+		CommerceNavigator.gotoSpeedwellDashboardItem(dashboardItem = "Login & Security");
+
+		CommerceAcceleratorsInitializer.reviewOrder(
+			accountName = "Test Test",
+			productName = "ABS Sensor",
+			productPrice = "100.00",
+			productQuantity = "2",
+			productSKU = "SPEED93015",
+			productUnitPrice = "50.00");
 	}
 
 }
