@@ -34,8 +34,7 @@ definition {
 
 	macro searchEntry {
 		Type(
-			entryName = "${entryName}",
-			locator1 = "TextInput#SEARCH",
+			locator1 = "Search#SEARCH_BAR_WIDGET",
 			value1 = "${entryName}");
 
 		Click(locator1 = "CommerceNavigation#SEARCH");
