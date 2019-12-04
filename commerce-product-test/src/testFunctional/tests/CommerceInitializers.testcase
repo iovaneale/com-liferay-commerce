@@ -43,14 +43,15 @@ definition {
 				password = "test",
 				userLoginEmailAddress = "test@liferay.com");
 
-			CommerceConfiguration.commerceInitializersTearDown();
-
 			CommerceConfiguration.commerceFrontStoreTearDown();
 
 			CommerceConfiguration.commerceAdminTearDown(
 				accountName = "Commerce Account",
 				userFirstName = "buyer");
 
+			CommerceConfiguration.commerceInitializersTearDown();
+
+			User.logoutPG();
 		}
 	}
 
