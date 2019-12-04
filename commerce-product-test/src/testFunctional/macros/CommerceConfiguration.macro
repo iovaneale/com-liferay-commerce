@@ -245,7 +245,6 @@ definition {
 		while (IsElementNotPresent(locator1 = "CommerceNavigation#EMPTY_SEARCH_CONTAINER")) {
 			CommerceProducts.deleteEntries(deleteMessage = "Are you sure you want to delete the selected channels?");
 		}
-		
 	}
 
 	macro commerceInitializersSetup {

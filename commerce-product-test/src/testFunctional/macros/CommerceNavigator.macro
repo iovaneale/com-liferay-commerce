@@ -21,6 +21,12 @@ definition {
 		Navigator.openSpecificURL(url = "localhost:8080/web/guest/p/${productName}");
 	}
 
+	macro gotoMiniumSidebarItem {
+		Click(
+			key_menuItem = "${menuItem}",
+			locator1 = "CommerceAccelerators#MINIUM_SIDEBAR_MENU_ITEM");
+	}
+
 	macro gotoOptionValues {
 		Click(
 			key_optionEntryName = "${optionEntryName}",
@@ -32,19 +38,10 @@ definition {
 		AssertElementPresent(locator1 = "CommerceEntry#NAME_FIELD");
 	}
 
-	macro searchEntry {
-		Type(
-			entryName = "${entryName}",
-			locator1 = "TextInput#SEARCH",
-			value1 = "${entryName}");
-
-		Click(locator1 = "CommerceNavigation#SEARCH");
-	}
-
-	macro gotoMiniumSidebarItem {
+	macro gotoSpeedwellDashboardItem {
 		Click(
-			key_menuItem = "${menuItem}",
-			locator1 = "CommerceAccelerators#MINIUM_SIDEBAR_MENU_ITEM");
+			key_dashboardItem = "${dashboardItem}",
+			locator1 = "CommerceAccelerators#SPEEDWELL_ACCOUNT_DASHBOARD_ITEM");
 	}
 
 	macro gotoSpeedwellTopbarItem {
@@ -53,10 +50,13 @@ definition {
 			locator1 = "CommerceAccelerators#SPEEDWELL_TOPBAR_MENU_ITEM");
 	}
 
-	macro gotoSpeedwellDashboardItem {
-		Click(
-			key_dashboardItem = "${dashboardItem}",
-			locator1 = "CommerceAccelerators#SPEEDWELL_ACCOUNT_DASHBOARD_ITEM");
+	macro searchEntry {
+		Type(
+			entryName = "${entryName}",
+			locator1 = "TextInput#SEARCH",
+			value1 = "${entryName}");
+
+		Click(locator1 = "CommerceNavigation#SEARCH");
 	}
 
 }
