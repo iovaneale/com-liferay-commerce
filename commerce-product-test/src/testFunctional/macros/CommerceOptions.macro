@@ -29,14 +29,17 @@ definition {
 
 	macro deleteOptionsEntries {
 		while (IsElementPresent(locator1 = "Button#DELETE")) {
+
 			CommerceOptions.deleteOptionsEntry();
 		}
 	}
 
 	macro deleteOptionsEntry {
-		Button.clickDelete();
+		AssertClickNoError(
+			locator1 = "Button#DELETE",
+			value1 = "Delete");
 
-		AssertConfirm.waitForConfirmation(value1 = "Are you sure to delete?");
+		AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to delete the selected option?");
 	}
 
 }
