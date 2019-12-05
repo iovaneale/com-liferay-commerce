@@ -198,7 +198,7 @@ definition {
 
 		CommerceNavigator.gotoSpeedwellTopbarItem(menuItem = "My Account");
 
-		CommerceNavigator.gotoSpeedwellDashboardItem(dashboardItem = "Login & Security");
+		CommerceNavigator.gotoSpeedwellDashboardItem(dashboardItem = "My Orders");
 
 		CommerceAcceleratorsInitializer.reviewOrder(
 			accountName = "Test Test",
