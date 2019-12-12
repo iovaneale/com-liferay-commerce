@@ -1,0 +1,28 @@
+definition {
+
+	macro initializersCheckout {
+		ProductMenu.gotoSite(site = "${site}");
+
+		Click(locator1 = "CommerceAccelerators#MINI_CART_BUTTON");
+
+		Click(locator1 = "CommerceAccelerators#CHECKOUT_BUTTON");
+
+		Pause(locator1 = "3000");
+
+		Select(
+			key_fieldLabel = "Choose Shipping Address",
+			locator1 = "Select#GENERIC_SELECT_FIELD",
+			value1 = "${addressName}");
+
+		Click(locator1 = "Button#CONTINUE");
+
+		Click(
+			key_radioOption = "${deliveryType} Delivery",
+			locator1 = "CommerceAccelerators#CHECKOUT_SHIPPING_OPTION_RADIO");
+
+		Click(locator1 = "Button#CONTINUE");
+
+		Click(locator1 = "Button#CONTINUE");
+	}
+
+}

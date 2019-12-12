@@ -1,0 +1,151 @@
+definition {
+
+	macro addExistingMemberWithRoleToAccount {
+
+		Click(
+			key_headerTab = "Members",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_HEADER_TAB");
+
+		Click(
+			key_button = "Invite User",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_MAIN_BUTTON");
+
+		Click(
+			key_userEmailAddress = "${userEmailAddress}",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_ADD_MODAL_PLUS_BUTTON");
+
+		Click(
+			key_button = "Invite User",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_INVITE_USER_MODAL_INVITE_USER_BUTTON");
+
+		Click(
+			key_userEmailAddress = "${userFirstName}",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_MEMBERS_MEMBER");
+
+		Click(
+			key_button = "Roles",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_MAIN_BUTTON");
+
+		Click(
+			key_role = "${userFirstName}",
+			locator1 = "CommerceAccelerators#ROLES_MODAL_ROLE_CHECKBOX");
+
+		Click(
+			key_button = "Done",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_MAIN_BUTTON");
+	}
+
+	macro addNewAddressToAccount {
+
+		Click(
+			key_headerTab = "Addresses",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_HEADER_TAB");
+
+		Click(locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_ADD_ADDRESS_BUTTON");
+
+		Type(
+			locator1 = "TextInput#STREET_1",
+			value1 = "${addressAddress}");
+
+		Type(
+			locator1 = "TextInput#CITY",
+			value1 = "${addressCity}");
+
+		Select(
+			locator1 = "Select#COUNTRY",
+			value1 = "${addressCountry}");
+
+		Type(
+			locator1 = "TextInput#POSTAL_CODE",
+			value1 = "${addressZipCode}");
+
+		Click(locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_ADD_ADDRESS_ARROW");
+
+		Type(
+			locator1 = "TextInput#NAME",
+			value1 = "${addressName}");
+
+		Click(locator1 = "CommerceAccelerators#MODAL_CREATE_BUTTON");
+	}
+
+	macro createNewAccountViaFront {
+
+		Click(locator1 = "CommerceAccelerators#ACCOUNT_SELECTOR_DROPDOWN");
+
+		Click(locator1 = "CommerceAccelerators#ACCOUNT_SELECTOR_VIEW_ALL_ACCOUNTS");
+
+		Click(locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_ADD_ACCOUNT_BUTTON");
+
+		Type(
+			locator1 = "TextInput#NAME",
+			value1 = "${accountName}");
+
+		Click(
+			key_userEmailAddress = "${adminEmailAddress}",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_ADD_MODAL_PLUS_BUTTON");
+
+		Click(locator1 = "CommerceAccelerators#MODAL_CREATE_BUTTON");
+	}
+
+	macro inviteNewMemberWithRoleToAccount {
+
+		Click(
+			key_headerTab = "Members",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_HEADER_TAB");
+
+		Click(
+			key_button = "Invite User",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_MAIN_BUTTON");
+
+		Type.typeClickAt(
+			locator1 = "CommerceAccelerators#ADD_ACCOUNT_MODAL_NAME_OR_EMAIL_FIELD",
+			value1 = "${emailAddress}");
+
+		Click(locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_ADD_MODAL_PLUS_BUTTON");
+
+		Click(
+			key_button = "Invite User",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_INVITE_USER_MODAL_INVITE_USER_BUTTON");
+
+		Click(
+			key_emailAddress = "${emailAddress}",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_MEMBERS_MEMBER");
+
+		Click(
+			key_button = "Roles",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_MAIN_BUTTON");
+
+		Click(
+			key_role = "${role}",
+			locator1 = "CommerceAccelerators#ROLES_MODAL_ROLE_CHECKBOX");
+
+		Click(
+			key_button = "Done",
+			locator1 = "CommerceAccelerators#ACCOUNT_MANAGEMENT_MAIN_BUTTON");
+	}
+
+	macro reviewOrder {
+		if(IsElementPresent(key_accountName = "${accountName}", locator1 = "CommerceAccelerators#PENDING_ORDERS_ENTRY_ACCOUNT_NAME")) {
+			Click(
+				key_accountName = "${accountName}",
+				locator1 = "CommerceAccelerators#PENDING_ORDERS_ENTRY_ACCOUNT_NAME");
+				
+			Click(
+				key_accountName = "${accountName}",
+				locator1 = "CommerceAccelerators#PENDING_ORDERS_ENTRY");
+		}
+
+		AssertTextEquals(
+			locator1 = "CommerceAccelerators#PENDING_ORDER_DETAILS_NAME",
+			value1 = "${productName}");
+
+		AssertTextEquals(
+			locator1 = "CommerceAccelerators#PENDING_ORDER_DETAILS_UNIT_PRICE",
+			value1 = "$${productUnitPrice}");
+
+		AssertTextEquals(
+			locator1 = "CommerceAccelerators#PENDING_ORDER_DETAILS_PRICE",
+			value1 = "$${productPrice}");
+	}
+
+}

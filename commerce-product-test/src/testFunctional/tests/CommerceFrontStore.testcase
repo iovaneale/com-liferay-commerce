@@ -10,7 +10,14 @@ definition {
 
 		User.firstLoginPG();
 
-		CommerceConfiguration.commerceStoreFrontSetUp();
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Search");
+
+		SearchAdministration.executeSearchActions(actionsDescription = "Reindex all search indexes.");
+
+		CommerceConfiguration.commerceFrontStoreSetUp();
 	}
 
 	tearDown {
@@ -20,7 +27,7 @@ definition {
 			PortalInstances.tearDownCP();
 		}
 		else {
-			CommerceConfiguration.commerceStoreFrontTearDown();
+			CommerceConfiguration.commerceFrontStoreTearDown();
 		}
 	}
 

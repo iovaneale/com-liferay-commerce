@@ -1,5 +1,32 @@
 definition {
 
+	macro addProductToCart {
+		if (IsElementPresent(locator1 = "CommerceAccelerators#ADD_TO_CART_ARROW_BUTTON", key_productName = "${productName}")) {
+			Click(
+				key_productName = "${productName}",
+				locator1 = "CommerceAccelerators#ADD_TO_CART_BUTTON");
+
+			Type(
+				key_productName = "${productName}",
+				locator1 = "CommerceAccelerators#COMMERCE_QUANTITY_SELECTOR_INPUT",
+				value1 = "${productQuantity}");
+
+			Click(
+				key_productName = "${productName}",
+				locator1 = "CommerceAccelerators#ADD_TO_CART_ARROW_BUTTON");
+		}
+		else {
+			Type(
+				key_productName = "${productName}",
+				locator1 = "CommerceAccelerators#COMMERCE_QUANTITY_SELECTOR_INPUT",
+				value1 = "${productQuantity}");
+
+			Click(
+				key_productName = "${productName}",
+				locator1 = "CommerceAccelerators#ADD_TO_CART_BUTTON");
+		}
+	}
+
 	macro selectAssociatedFSOptionsValue {
 		Click(locator1 = "CommerceFrontStore#FS_PRODUCT_OPTIONS_SELECT");
 

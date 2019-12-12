@@ -21,6 +21,12 @@ definition {
 		Navigator.openSpecificURL(url = "localhost:8080/web/guest/p/${productName}");
 	}
 
+	macro gotoMiniumSidebarItem {
+		Click(
+			key_menuItem = "${menuItem}",
+			locator1 = "CommerceAccelerators#MINIUM_SIDEBAR_MENU_ITEM");
+	}
+
 	macro gotoOptionValues {
 		Click(
 			key_optionEntryName = "${optionEntryName}",
@@ -30,6 +36,18 @@ definition {
 		WaitForSPARefresh();
 
 		AssertElementPresent(locator1 = "CommerceEntry#NAME_FIELD");
+	}
+
+	macro gotoSpeedwellDashboardItem {
+		Click(
+			key_dashboardItem = "${dashboardItem}",
+			locator1 = "CommerceAccelerators#SPEEDWELL_ACCOUNT_DASHBOARD_ITEM");
+	}
+
+	macro gotoSpeedwellTopbarItem {
+		Click(
+			key_menuItem = "${menuItem}",
+			locator1 = "CommerceAccelerators#SPEEDWELL_TOPBAR_MENU_ITEM");
 	}
 
 	macro searchEntry {
